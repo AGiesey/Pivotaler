@@ -1,3 +1,8 @@
 .DS_Store
 .vscode/launch.json
 .vscode/tasks.json
+
+bin
+obj
+
+node_modules
