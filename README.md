@@ -4,11 +4,25 @@
 
 Use yarn, not NPM
 
+## Dependencies
 
-## Links
+### Pivotal
 
-*Recharts*
+API Docs
+<https://www.pivotaltracker.com/help/api/rest/v5#top>
 
-Chart docs
+Activity Webhook (For the future)
+<https://www.pivotaltracker.com/help/articles/activity_webhook/>
 
-http://recharts.org/en-US
+### Recharts
+
+Docs
+<http://recharts.org/en-US>
+
+### Material-UI
+
+See Components and Components API
+<https://material-ui.com/>
+
+Default Theme (all available theme properties)
+<https://material-ui.com/customization/default-theme/>
