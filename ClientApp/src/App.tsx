@@ -1,7 +1,10 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
-import { Toolbar, Typography, AppBar, makeStyles } from '@material-ui/core';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Link, Switch, Redirect } from "react-router-dom";
+import { Toolbar, Typography, AppBar, makeStyles, Button } from '@material-ui/core';
+import { ThemeProvider } from '@material-ui/core/styles';
+import { pivotalerTheme } from './muiTheme/pivotalerTheme';
 import Burndown from './burndown/Burndown';
+import { Login } from './login/Login';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -21,36 +24,47 @@ const useStyles = makeStyles(theme => ({
   },
   body: {
     height: "calc(100vh - 64px)",
-    paddingTop: ".5em"
+    paddingTop: ".5em",
+    display: "flex",
   }
 }));
 
 const App: React.FC = () => {
   const classes = useStyles();
 
+  //TODO: make a real auth
+  const [auth, setAuth] = useState(false);
+
   return (
-    <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar>
-          {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            <MenuIcon />
-          </IconButton> */}
-          <Typography variant="h6" className={classes.title}>
-            Pivotal<span className={classes.titleAddendum}>er</span>
-          </Typography>
-          {/* <Button color="inherit">Login</Button> */}
-        </Toolbar>
-      </AppBar>
-      <div className={classes.body}>
-          <Router>
+    <ThemeProvider theme={pivotalerTheme} >
+      <div className={classes.root}>
+        <Router>
+          <AppBar position="static">
+            <Toolbar>
+              <Typography variant="h6" className={classes.title}>
+                Pivotal<span className={classes.titleAddendum}>er</span>
+              </Typography>
+              <Button color="inherit" component={Link} to={'/login'}>Login</Button>
+            </Toolbar>
+            
+          </AppBar>
+          <div className={classes.body}>
             <Switch>
-              <Route path="/">
+              <Route exact path="/" redir>
+                { auth ? <Redirect to="/burndown" /> : <Redirect to="/login" /> }
+              </Route>
+              <Route path="/login">
+                <Login></Login>
+              </Route>
+              <Route path="/burndown">
                 <Burndown></Burndown>
               </Route>
             </Switch>
-          </Router>
+          </div>
+        </Router>
       </div>
-    </div>
+    </ThemeProvider>
+    
   );
 }
 
