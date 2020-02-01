@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Link, Switch, Redirect } from "react-ro
 import { Toolbar, Typography, AppBar, makeStyles, Button } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { pivotalerTheme } from './muiTheme/pivotalerTheme';
-import Burndown from './burndown/Burndown';
+import BurndownPage from './burndown/BurndownPage';
 import { Login } from './login/Login';
 
 const useStyles = makeStyles(theme => ({
@@ -62,7 +62,7 @@ const App: React.FC = () => {
                 <Login></Login>
               </Route>
               <Route path="/burndown">
-                <Burndown></Burndown>
+                <BurndownPage></BurndownPage>
               </Route>
             </Switch>
           </div>
