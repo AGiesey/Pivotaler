@@ -41,7 +41,7 @@ export const Login: React.FC = () => {
   
   return (
     <div className={classes.root}>
-      <Paper className={classes.loginCard} variant="outlined" >
+      <Paper className={classes.loginCard}>
         <Typography variant="h4">Login: </Typography>
         <form className={classes.loginForm} autoComplete="off" noValidate>
           <TextField 

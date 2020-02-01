@@ -10,6 +10,7 @@ const useStyles = makeStyles(theme => ({
   root: {
     height: "100vh",
     overflow: "hidden",
+    background: theme.palette.grey[200]
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -44,7 +45,11 @@ const App: React.FC = () => {
               <Typography variant="h6" className={classes.title}>
                 Pivotal<span className={classes.titleAddendum}>er</span>
               </Typography>
-              <Button color="inherit" component={Link} to={'/login'}>Login</Button>
+              {
+                auth 
+                  ? <Button color="inherit" component={Link} to={'/login'}>Logout</Button>
+                  : <Button color="inherit" component={Link} to={'/login'}>Login</Button>
+              }
             </Toolbar>
             
           </AppBar>
