@@ -1,25 +1,44 @@
 import axios, { AxiosRequestConfig } from 'axios';
+import { ProjectSnapshot, StorySnapshot, StoryType, StoryState, Story } from './burndownInterfaces';
 
 const apiBaseUri = 'https://www.pivotaltracker.com/services/v5/projects/836745/';
 const token = 'de3c3f98865f45ba9be2207777392782';
 
-export interface BurndownDatapoint {
-  date: any;
-  totalPoints: number;
+export const getBurndown = () => {
+  return getBacklogStoriesAndProjectSnapshots()
+    .then(([stories, snapshots]) => {
+      return [
+        new Map(stories.map((x: any) => ([x.id, x]))),
+        snapshots
+      ]
+    })
+    .then(([storyMap, snapshots]) => {
+      return snapshots.map((snapshotDay: any) => createBurndownDay(snapshotDay, storyMap))
+    })
 }
 
-const createBurndownData = (data: any[]): BurndownDatapoint[] => {
-  return data.map(x => ({date: x.date, totalPoints: x.current.length}))
+/**
+ * Wait for project snapshots and all the backlog stores then 
+ * return them as a touple
+ */
+const getBacklogStoriesAndProjectSnapshots = () => {
+  return Promise.all(
+    [getCurrentBacklogStories(),
+    getProjectSnapshots()]
+  )
 }
 
-export const getProjectSnapshots = () => {
+/**
+ * get the daily snapshots for a (todo: given) two week time period
+ */
+const getProjectSnapshots = () => {
   const config: AxiosRequestConfig = {
     headers: {
       'X-TrackerToken': token
     },
     params: {
       'start_date': '2020-01-20',
-      'end_date': '2020-02-01'
+      'end_date': '2020-01-31'
     }
   }
 
@@ -27,7 +46,10 @@ export const getProjectSnapshots = () => {
     .then(response => response.data);
 }
 
-export const getCurrentBacklogStories = () => {
+/**
+ * Get all stories from the sprint backlog epic
+ */
+const getCurrentBacklogStories = () => {
   const config: AxiosRequestConfig = {
     headers: {
       'X-TrackerToken': token
@@ -41,19 +63,31 @@ export const getCurrentBacklogStories = () => {
     .then(response => response.data);
 }
 
-export const getBurndown = () => {
-  const config: AxiosRequestConfig = {
-    headers: {
-      'X-TrackerToken': 'de3c3f98865f45ba9be2207777392782'
-    },
-    params: {
-      'start_date': '2020-01-20',
-      'end_date': '2020-02-01'
-    }
+/**
+ * Given a single day in a snapshot, return the cumulative count of points for every story which is in the
+ * current backlog epic and not status "accepted" or "rejected" (maybe rethink rejected)
+ * 
+ * @param day: ProjectSnapshot
+ * @param burnDownStories: Map<number, Story>
+ * 
+ * @returns BurndownDatapoint
+ */
+const createBurndownDay = (day: ProjectSnapshot, burndownStories: Map<number, Story>) => {
+  var totalPoints = 0;
+  
+  var unfinishedStories =  day.current.filter((story: StorySnapshot) => 
+    (story.story_type === StoryType.bug || 
+    story.story_type === StoryType.chore ||
+    story.story_type === StoryType.feature) &&
+    story.state !== StoryState.accepted &&
+    burndownStories.has(story.story_id)
+  );
+  
+  if (unfinishedStories && unfinishedStories.length) {
+    totalPoints = unfinishedStories
+      .map(story => story.estimate ? story.estimate : 0)
+      .reduce((reducer, current) => reducer! += current!);
   }
-
-  return axios.get(`${apiBaseUri}history/snapshots`, config)
-    .then(
-      response => createBurndownData(response.data)
-    )
+  
+  return {date: day.date, totalPoints: totalPoints}
 }

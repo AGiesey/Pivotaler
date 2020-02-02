@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { getBurndown, getProjectSnapshots, getCurrentBacklogStories, BurndownDatapoint } from './burndownPivotalService'
+import { getBurndown } from './burndownPivotalService'
 import { makeStyles, Paper, Typography } from '@material-ui/core';
 import { BurndownChart } from './BurndownChart';
+import { BurndownDatapoint } from './burndownInterfaces';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -14,32 +15,25 @@ const useStyles = makeStyles(theme => ({
     width: "80%",
     height: "80%",
     padding: "1em"
+  },
+  pageTitle: {
+    marginBottom: theme.spacing(3)
   }
 }))
 
 const BurndownPage: React.FC = () => {
   const classes = useStyles();
   const [burndownData, setBurndownData] = useState([] as BurndownDatapoint[])
-  const [snapshot, setSnapshot] = useState();
-  const [stories, setStories] = useState();
-
-  useEffect(() => {
-    getProjectSnapshots()
-      .then(x => console.log("Project Snapshots", x));
-
-    getCurrentBacklogStories()
-      .then(x => console.log("Backlog Stories", x))
-  }, [])
 
   useEffect(() => {
     getBurndown()
       .then((bd: BurndownDatapoint[])  => setBurndownData(bd))
-  }, [burndownData])
+  }, [])
 
   return (
     <div className={classes.root}>
       <Paper className={classes.backlogPaper}>
-        <Typography variant="h4">Sprint Burndown </Typography>
+        <Typography className={classes.pageTitle} variant="h4">Sprint Burndown </Typography>
           {
             burndownData.length
               ? <BurndownChart data={burndownData} />

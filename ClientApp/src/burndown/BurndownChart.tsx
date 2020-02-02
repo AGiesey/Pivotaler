@@ -1,6 +1,6 @@
 import React from 'react';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
-import { BurndownDatapoint } from './burndownPivotalService';
+import { BurndownDatapoint } from './burndownInterfaces';
 
 interface BurndownChartProps {
   data: BurndownDatapoint[];
@@ -8,7 +8,7 @@ interface BurndownChartProps {
 
 export const BurndownChart = (props: BurndownChartProps) => {
   return (
-    <ResponsiveContainer>
+    <ResponsiveContainer width="90%" height="90%">
       <LineChart data={props.data}>
         <Line type="monotone" dataKey="totalPoints" stroke="#8884d8" />
         <XAxis dataKey="date" />
