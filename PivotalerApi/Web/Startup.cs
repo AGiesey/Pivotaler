@@ -1,11 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 using Data;
+using Data.Models.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -32,6 +31,20 @@ namespace Web
             services.AddDbContext<PostgressDbContext>(options => 
                 options.UseNpgsql(Configuration.GetConnectionString("PostgresContext")));
 
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<PostgressDbContext>()
+                .AddDefaultTokenProviders();
+
+            // services.AddIdentityServer()
+            //     .AddAspNetIdentity<ApplicationUser, IdentityRole>()
+            //     .AddEntityFrameworkStores<PostgressDbContext>()
+            //     .AddDefaultTokenProviders();
+                
+            //services.AddApiAuthorization<ApplicationUser, PostgressDbContext>();
+
+            services.AddAuthentication();
+            //     .AddIdentityServerJwt();
+
             services.AddControllers();
         }
 
@@ -47,7 +60,9 @@ namespace Web
 
             app.UseRouting();
 
-            //app.UseAuthorization();
+            app.UseAuthorization();
+
+            app.UseIdentityServer();
 
             app.UseEndpoints(endpoints =>
             {
