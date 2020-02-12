@@ -31,7 +31,7 @@ namespace Infrastructure
 
     public void Dispose()
     {
-      throw new NotImplementedException();
+        // TODO: I don't know what to dispose...
     }
 
     public async Task<User> FindByIdAsync(string userId, CancellationToken cancellationToken)

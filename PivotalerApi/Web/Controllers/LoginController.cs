@@ -1,16 +1,15 @@
 using System;
 using System.Threading.Tasks;
-using Data;
 using Data.Entities.Identity;
-using Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Web.Models.User;
 
 namespace Web.Controllers
 {
 
   [ApiController]
-  [Route("[controller]")]
+  [Route("api/[controller]")]
   public class LoginController : ControllerBase
   {
     private readonly UserManager<User> userManager;
@@ -27,12 +26,20 @@ namespace Web.Controllers
     }
 
     [HttpPost("/Register")]
-    public async Task<IActionResult> Register(User user)
+    public async Task<IActionResult> Register(RegisterUserModel userModel)
     {
+      // TODO: Use AutoMapper instead.
+      var newUser = new User
+      {
+        Id = Guid.NewGuid().ToString(),
+        UserName = userModel.UserName,
+        Email = userModel.Email,
+      };
       
-      user.Id = Guid.NewGuid().ToString();
-      await userManager.CreateAsync(user, user.PasswordHash);
-      return Ok();
+      await userManager.CreateAsync(newUser, userModel.Password);
+
+      // TODO: Use URI creator or whatever
+      return Created($"/api/users/{newUser.Id}", new {});
     }
     
   }
