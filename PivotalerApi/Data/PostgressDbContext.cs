@@ -1,5 +1,6 @@
-using Data.User;
+using Data.Entities.Identity;
 using Microsoft.EntityFrameworkCore;
+
 namespace Data 
 {
   public class PostgressDbContext : DbContext
@@ -8,8 +9,7 @@ namespace Data
       :base(options)
     {
     }
-
-    public DbSet<UserModel> Users { get; set; }
+    public DbSet<User> Users { get; set;}
 
   }
 }

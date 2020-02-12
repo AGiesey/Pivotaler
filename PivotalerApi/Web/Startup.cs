@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Data;
+using Data.Entities.Identity;
+using Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -27,10 +30,11 @@ namespace Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<DbContext, PostgressDbContext>();
-            
             services.AddDbContext<PostgressDbContext>(options => 
                 options.UseNpgsql(Configuration.GetConnectionString("PostgresContext")));
+
+            services.AddIdentityCore<User>(options => { });
+            services.AddScoped<IUserStore<User>, UserStore>();
 
             services.AddControllers();
         }

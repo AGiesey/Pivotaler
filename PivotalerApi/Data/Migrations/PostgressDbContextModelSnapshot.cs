@@ -18,23 +18,18 @@ namespace Data.Migrations
                 .HasAnnotation("ProductVersion", "3.1.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            modelBuilder.Entity("Data.User.UserModel", b =>
+            modelBuilder.Entity("Data.Entities.Identity.User", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Email")
+                    b.Property<string>("Id")
                         .HasColumnType("text");
 
-                    b.Property<string>("GivenName")
+                    b.Property<string>("NormalizedUserName")
                         .HasColumnType("text");
 
-                    b.Property<int>("PivotalId")
-                        .HasColumnType("integer");
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("text");
 
-                    b.Property<string>("Surname")
+                    b.Property<string>("UserName")
                         .HasColumnType("text");
 
                     b.HasKey("Id");

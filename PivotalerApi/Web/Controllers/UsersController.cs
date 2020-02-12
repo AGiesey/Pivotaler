@@ -1,6 +1,4 @@
-using System;
-using System.Collections.Generic;
-using Data.User;
+using Data.Entities.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,19 +15,23 @@ namespace Web.Controllers
       this.context = context;
     }
 
-    // [HttpGet]
-    // public ActionResult<IEnumerable<UserModel>> GetAll()
-    // {
-    //   return contex
-    // }
+    [HttpGet]
+    public ActionResult<User> GetTestUser()
+    {
+      var newUser = new User {
+        Id = "josos",
+        UserName = "adam",
+        NormalizedUserName = "ADAM",
+        PasswordHash = "StuffAndThings"
+      };
+
+      return Ok(newUser);
+    }
 
     [HttpPost]
-    public ActionResult<UserModel> Create(UserModel user)
+    public ActionResult Create()
     {
-      context.Add(user);
-      context.SaveChanges();
-      
-      return Ok(user);
+      return Ok("Hello World");
     }
     
   }
