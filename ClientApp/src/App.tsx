@@ -5,6 +5,7 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import { pivotalerTheme } from './muiTheme/pivotalerTheme';
 import BurndownPage from './burndown/BurndownPage';
 import { Login } from './login/Login';
+import { Register } from './register/Register';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -59,10 +60,13 @@ const App: React.FC = () => {
                 { auth ? <Redirect to="/burndown" /> : <Redirect to="/login" /> }
               </Route>
               <Route path="/login">
-                <Login></Login>
+                <Login />
+              </Route>
+              <Route path="/register">
+                <Register />
               </Route>
               <Route path="/burndown">
-                <BurndownPage></BurndownPage>
+                <BurndownPage />
               </Route>
             </Switch>
           </div>

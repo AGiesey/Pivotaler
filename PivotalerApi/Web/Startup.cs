@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 using Data;
 using Data.Entities.Identity;
 using Infrastructure;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -26,6 +28,7 @@ namespace Web
         }
 
         public IConfiguration Configuration { get; }
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -33,10 +36,37 @@ namespace Web
             services.AddDbContext<PostgressDbContext>(options => 
                 options.UseNpgsql(Configuration.GetConnectionString("PostgresContext")));
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy(MyAllowSpecificOrigins,
+                builder =>
+                {
+                    builder.WithOrigins("http://localhost:3000",
+                                        "https://localhost:3000")
+                                        .AllowAnyHeader()
+                                        .AllowAnyMethod();
+                });
+            });
+
             services.AddIdentityCore<User>(options => { });
             services.AddScoped<IUserStore<User>, UserStore>();
 
             services.AddControllers();
+
+            // services.AddAuthentication(options => { 
+            //     options.DefaultScheme = "Cookies"; 
+            // }).AddCookie("Cookies", options => {
+            //     options.Cookie.Name = "auth_cookie";
+            //     options.Cookie.SameSite = SameSiteMode.None;
+            //     options.Events = new CookieAuthenticationEvents
+            //     {                          
+            //         OnRedirectToLogin = redirectContext =>
+            //         {
+            //             redirectContext.HttpContext.Response.StatusCode = 401;
+            //             return Task.CompletedTask;
+            //         }
+            //     };                
+            // });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,11 +77,13 @@ namespace Web
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            app.UseCors(MyAllowSpecificOrigins);
+
+            // app.UseHttpsRedirection();
 
             app.UseRouting();
 
-            //app.UseAuthorization();
+            // app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

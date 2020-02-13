@@ -19,8 +19,8 @@ namespace Web.Controllers
       this.userManager = userManager;
     }
 
-    [HttpPost]
-    public IActionResult Login()
+    [HttpPost("/Login")]
+    public IActionResult Login(LoginModel model)
     {
       return Ok("Logged In");
     }

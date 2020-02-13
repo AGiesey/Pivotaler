@@ -38,6 +38,10 @@ export const Login: React.FC = () => {
   const onLogin = (e: React.MouseEvent<HTMLButtonElement>): void => {
     history.push('./burndown');
   }
+
+  const goToRegister = (e: React.MouseEvent<HTMLButtonElement>): void => {
+    history.push('./register');
+  }
   
   return (
     <div className={classes.root}>
@@ -71,7 +75,7 @@ export const Login: React.FC = () => {
               className={classes.actionButton} 
               variant="outlined" 
               color="secondary"
-              onClick={onLogin}>
+              onClick={goToRegister}>
               Register
             </Button>
           </div>
