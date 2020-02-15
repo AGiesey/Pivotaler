@@ -6,6 +6,7 @@ import { pivotalerTheme } from './muiTheme/pivotalerTheme';
 import BurndownPage from './burndown/BurndownPage';
 import { Login } from './login/Login';
 import { Register } from './register/Register';
+import { SprintPage } from './sprint/SprintPage';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -67,6 +68,9 @@ const App: React.FC = () => {
               </Route>
               <Route path="/burndown">
                 <BurndownPage />
+              </Route>
+              <Route path="/sprint">
+                <SprintPage />
               </Route>
             </Switch>
           </div>

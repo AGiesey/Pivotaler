@@ -26,7 +26,7 @@ namespace Infrastructure.PivotalApi.Models
     //public IEnumerable<int> Labels { get; set; } // This and Label_Ids throw a deserialization error
     public IEnumerable<int> Task_Ids { get; set; }
     public IEnumerable<int> Pull_Request_Ids { get; set; }
-    public IEnumerable<int>  Branch_Ids { get; set; }
+    public IEnumerable<int> Branch_Ids { get; set; }
     public IEnumerable<int> Blocker_Ids { get; set; }
     public IEnumerable<int> Follower_Ids { get; set; }
     public IEnumerable<int> Comment_Ids { get; set; }
