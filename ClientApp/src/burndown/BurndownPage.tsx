@@ -26,19 +26,20 @@ const BurndownPage: React.FC = () => {
   const [burndownData, setBurndownData] = useState([] as BurndownDatapoint[])
 
   useEffect(() => {
-    getBurndown()
-      .then((bd: BurndownDatapoint[])  => setBurndownData(bd))
+    // TODO: implement new get burndown stuff
+    //getBurndown()
+      //.then((bd: BurndownDatapoint[])  => setBurndownData(bd))
   }, [])
 
   return (
     <div className={classes.root}>
       <Paper className={classes.backlogPaper}>
         <Typography className={classes.pageTitle} variant="h4">Sprint Burndown </Typography>
-          {
+          {/* {
             burndownData.length
               ? <BurndownChart data={burndownData} />
               : <Typography>Loading...</Typography>
-          }   
+          }    */}
       </Paper>
     </div>
   )

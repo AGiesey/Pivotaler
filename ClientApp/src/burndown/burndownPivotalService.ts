@@ -1,8 +1,8 @@
+// TODO: Delete this class and move logic to the backend.
 import axios, { AxiosRequestConfig } from 'axios';
 import { ProjectSnapshot, StorySnapshot, StoryType, StoryState, Story } from './burndownInterfaces';
 
 const apiBaseUri = 'https://www.pivotaltracker.com/services/v5/projects/836745/';
-const token = 'de3c3f98865f45ba9be2207777392782';
 
 export const getBurndown = () => {
   return getBacklogStoriesAndProjectSnapshots()
@@ -34,7 +34,7 @@ const getBacklogStoriesAndProjectSnapshots = () => {
 const getProjectSnapshots = () => {
   const config: AxiosRequestConfig = {
     headers: {
-      'X-TrackerToken': token
+      'X-TrackerToken': "not valid"
     },
     params: {
       'start_date': '2020-01-20',
@@ -52,7 +52,7 @@ const getProjectSnapshots = () => {
 const getCurrentBacklogStories = () => {
   const config: AxiosRequestConfig = {
     headers: {
-      'X-TrackerToken': token
+      'X-TrackerToken': "not valid"
     },
     params: {
       'filter': 'labels:"sprint backlog"'
