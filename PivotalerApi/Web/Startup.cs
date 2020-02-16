@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Data;
 using Data.Entities.Identity;
 using Infrastructure;
@@ -17,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using AutoMapper;
 
 namespace Web
 {
@@ -35,6 +32,8 @@ namespace Web
         {
             services.AddDbContext<PostgressDbContext>(options => 
                 options.UseNpgsql(Configuration.GetConnectionString("PostgresContext")));
+
+            services.AddAutoMapper(typeof(Startup));
 
             services.AddCors(options =>
             {
