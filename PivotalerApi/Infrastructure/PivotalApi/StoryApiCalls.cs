@@ -20,7 +20,7 @@ namespace Infrastructure.PivotalApi
       jsonService = new JsonService();
     }
 
-    public async Task<IEnumerable<Story>> GetSprintBacklogStories()
+    public async Task<IEnumerable<PivotalStory>> GetSprintBacklogStories()
     {
       var projectId = 836745;
 
@@ -38,12 +38,12 @@ namespace Infrastructure.PivotalApi
           
           var result = await client.GetStringAsync(builder.ToString());
           
-          return jsonService.JsonStringToObject<IEnumerable<Story>>(result);
+          return jsonService.JsonStringToObject<IEnumerable<PivotalStory>>(result);
       }
 
     }
 
-    public async Task<Story> GetStoryById(int id)
+    public async Task<PivotalStory> GetStoryById(int id)
     {
       var projectId = 836745;
 
@@ -56,7 +56,7 @@ namespace Infrastructure.PivotalApi
 
           var result = await client.GetStringAsync(builder.ToString());
           
-          var story = jsonService.JsonStringToObject<Story>(result);
+          var story = jsonService.JsonStringToObject<PivotalStory>(result);
           
           return story;
       }

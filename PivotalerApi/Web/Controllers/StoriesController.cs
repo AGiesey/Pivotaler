@@ -1,6 +1,8 @@
 using System.Threading.Tasks;
+using AutoMapper;
 using Infrastructure.PivotalApi;
 using Microsoft.AspNetCore.Mvc;
+using Web.Models.Story;
 
 namespace Web.Controllers
 {
@@ -9,17 +11,20 @@ namespace Web.Controllers
   public class StoriesController : ControllerBase
   {
     private readonly StoryApiCalls storyApiCalls;
-    public StoriesController()
+    private readonly IMapper _mapper;
+    public StoriesController(IMapper mapper)
     {
-      storyApiCalls = new StoryApiCalls();
+      storyApiCalls = new StoryApiCalls(); // TODO: use DI
+      _mapper = mapper;
     }
     
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetStoryById(int id)
+    [HttpGet("{id}/Summary")]
+    public async Task<IActionResult> GetStorySummaryById(int id)
     {
       var result = await storyApiCalls.GetStoryById(id);
+      var summary = _mapper.Map<StorySummary>(result);
 
-      return Ok(result);
+      return Ok(summary);
     }
   }
 }

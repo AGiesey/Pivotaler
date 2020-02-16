@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Infrastructure.PivotalApi.Models
 {
-  public class Story
+  public class PivotalStory
   {
     public int Id { get; set; }
     public int Project_Id { get; set; }
