@@ -28,7 +28,7 @@ namespace Infrastructure.PivotalApi
       builder.Port = -1;
 
       var query = HttpUtility.ParseQueryString(builder.Query);
-      query["filter"] = "labels:\"sprint backlog\"";
+      query["filter"] = " owner:as and labels:\"sprint backlog\"";
 
       builder.Query = query.ToString();
 

@@ -4,6 +4,7 @@ namespace Web.Models.Story
 {
   public class StorySummary
   {
+    public int Id { get; set; }
     public string Title { get; set; }
     public string StoryType { get; set; }
     public float Estimate { get; set; }

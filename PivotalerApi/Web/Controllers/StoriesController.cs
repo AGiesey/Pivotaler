@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Infrastructure.PivotalApi;
@@ -25,6 +26,24 @@ namespace Web.Controllers
       var summary = _mapper.Map<StorySummary>(result);
 
       return Ok(summary);
+    }
+
+    [HttpGet("{id}/Details")]
+    public async Task<IActionResult> GetStoryDetailById(int id)
+    {
+      var result = await storyApiCalls.GetStoryById(id);
+      var details = _mapper.Map<StoryDetails>(result);
+
+      return Ok(details);
+    }
+
+    [HttpGet("SprintBacklog")]
+    public async Task<IActionResult> GetSprintBurndownStories()
+    {
+      var result = await storyApiCalls.GetSprintBacklogStories();
+      var summaries = _mapper.Map<IEnumerable<StorySummary>>(result);
+
+      return Ok(summaries);
     }
   }
 }

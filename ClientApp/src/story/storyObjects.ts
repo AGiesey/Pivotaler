@@ -1,9 +1,24 @@
 export interface StorySummaryModel {
+  id: number;
   title: string;
   storyType: storyTypes;
   estimate: number;
   currentState: storyStates;
   ownerIds: number[];
+}
+
+export interface StoryDetailsModel extends StorySummaryModel{
+  projectId: number;
+  description: string;
+  acceptedAt: Date | null;
+  taskIds: number[];
+  blockerIds: number[];
+  commentIds: number[];
+  createdAt: Date;
+  updatedAt: Date;
+  url: string;
+  blockedStoryIds: number[];
+  kind: string;
 }
 
 export enum storyTypes {

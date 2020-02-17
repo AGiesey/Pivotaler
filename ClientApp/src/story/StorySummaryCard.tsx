@@ -1,19 +1,36 @@
 import React from 'react';
-import { StorySummaryModel } from '../story/storyObjects';
-import { Card, Typography, Grid, makeStyles } from '@material-ui/core';
+import { StorySummaryModel, storyTypes } from '../story/storyObjects';
+import { Card, Typography, makeStyles, } from '@material-ui/core';
+import { BugReport, Star, Settings, Flag, OpenInNew } from '@material-ui/icons';
 
 const useStyles = makeStyles(theme => ({
-  feature: {
-    backgroundColor: 'green',
+  root: {
+    height: '8em',
+    display: 'flex',
+    flexDirection: 'column',
+    marginBottom: theme.spacing(2)
   },
-  bug: {
-    backgroundColor: 'orangeRed',
+  titleContainer: {
+    flexGrow: 1,
+    padding: theme.spacing(2),
+    overflow: 'hidden',
+    position: 'relative'
   },
-  chore: {
-    backgroundColor: 'darkGray',
+  fadeTitle: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    height: '30px',
+    background: 'linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.78) 58%, rgba(255,255,255,1) 74%)'
   },
-  release: {
-    backgroundColor: 'mediumBlue',
+  metaContainer: {
+    display: 'flex',
+    padding: `0 ${theme.spacing(2)}px`,
+    justifyContent: 'space-between',
+    flexShrink: 0
+  },
+  metaLeftContainer: {
+    display: 'flex'
   }
 }))
 
@@ -21,25 +38,40 @@ interface StorySummaryCardProps {
   data: StorySummaryModel;
 }
 
+const getStoryIcon = (storyType: storyTypes) => {
+  switch(storyType) {
+    case storyTypes.bug:
+      return <BugReport />
+    case storyTypes.feature:
+      return <Star />
+    case storyTypes.chore:
+      return <Settings />
+    case storyTypes.release:
+      return <Flag />
+  }
+}
+
 export const StorySummaryCard = (props: StorySummaryCardProps) => {
   const classes = useStyles();
-  const {title, storyType, estimate, currentState, ownerIds } = props.data;
+  const {id, title, storyType, estimate, ownerIds } = props.data;
   
   return (
-    <Card>
-      <Grid container spacing={1}>
-        <Grid className={classes[storyType]} item xs={1}>
-        </Grid>
-        <Grid item xs={1}>  
-          <Typography variant="h6">{estimate}</Typography>
-        </Grid>
-        <Grid item xs={10}>
-          <Typography variant="h5" noWrap>{title}<span>({ownerIds[0]})</span></Typography>
-        </Grid>
-      </Grid>
-      {/* <Grid container spacing={1}>
-        <code>{JSON.stringify(props.data)}</code>
-      </Grid> */}
+    <Card className={classes.root}>
+      
+      <div className={classes.titleContainer}>
+        <Typography>{title}</Typography>
+        <div className={classes.fadeTitle}></div>
+      </div>
+      
+      <div className={classes.metaContainer}>
+        <div className={classes.metaLeftContainer}>
+          {getStoryIcon(storyType)}
+          <Typography>{estimate}</Typography>
+        </div>
+        <div>
+          <OpenInNew />
+        </div>
+      </div>
     </Card>
   )
 }
