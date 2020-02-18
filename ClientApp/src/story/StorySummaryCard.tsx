@@ -1,11 +1,11 @@
 import React from 'react';
 import { StorySummaryModel, storyTypes } from '../story/storyObjects';
-import { Card, Typography, makeStyles, } from '@material-ui/core';
+import { Card, Typography, makeStyles, IconButton, } from '@material-ui/core';
 import { BugReport, Star, Settings, Flag, OpenInNew } from '@material-ui/icons';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    height: '8em',
+    height: '8.4em',
     display: 'flex',
     flexDirection: 'column',
     marginBottom: theme.spacing(2)
@@ -20,13 +20,14 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     bottom: 0,
     width: '100%',
-    height: '30px',
+    height: '15px',
     background: 'linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.78) 58%, rgba(255,255,255,1) 74%)'
   },
   metaContainer: {
     display: 'flex',
     padding: `0 ${theme.spacing(2)}px`,
     justifyContent: 'space-between',
+    alignItems: 'center',
     flexShrink: 0
   },
   metaLeftContainer: {
@@ -36,6 +37,7 @@ const useStyles = makeStyles(theme => ({
 
 interface StorySummaryCardProps {
   data: StorySummaryModel;
+  key: number;
 }
 
 const getStoryIcon = (storyType: storyTypes) => {
@@ -69,7 +71,9 @@ export const StorySummaryCard = (props: StorySummaryCardProps) => {
           <Typography>{estimate}</Typography>
         </div>
         <div>
-          <OpenInNew />
+          <IconButton color="secondary">
+            <OpenInNew />
+          </IconButton>
         </div>
       </div>
     </Card>

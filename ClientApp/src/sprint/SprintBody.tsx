@@ -69,7 +69,7 @@ export const SprintBody = (props: SprintBodyProps) => {
             <Typography variant="h5">Unstarted</Typography>
             <hr />
             {groupedStories
-              ? groupedStories.unstarted.map((x: StorySummaryModel) => <StorySummaryCard data={x} />)
+              ? groupedStories.unstarted.map((x: StorySummaryModel) => <StorySummaryCard key={x.id} data={x} />)
               : "Loading"
             }
           </ Paper>
@@ -79,7 +79,7 @@ export const SprintBody = (props: SprintBodyProps) => {
             <Typography variant="h5">Started</Typography>
             <hr />
             {groupedStories
-              ? groupedStories.started.map((x: StorySummaryModel) => <StorySummaryCard data={x} />)
+              ? groupedStories.started.map((x: StorySummaryModel) => <StorySummaryCard key={x.id} data={x} />)
               : "Loading"
             }
           </Paper>
@@ -89,7 +89,7 @@ export const SprintBody = (props: SprintBodyProps) => {
             <Typography variant="h5">Finished</Typography>
             <hr />
             {groupedStories
-              ? groupedStories.finished.map((x: StorySummaryModel) => <StorySummaryCard data={x} />)
+              ? groupedStories.finished.map((x: StorySummaryModel) => <StorySummaryCard key={x.id} data={x} />)
               : "Loading"
             }
           </Paper>
@@ -99,7 +99,7 @@ export const SprintBody = (props: SprintBodyProps) => {
             <Typography variant="h5">Delivered</Typography>
             <hr />
             {groupedStories
-              ? groupedStories.delivered.map((x: StorySummaryModel) => <StorySummaryCard data={x} />)
+              ? groupedStories.delivered.map((x: StorySummaryModel) => <StorySummaryCard key={x.id} data={x} />)
               : "Loading"
             }
           </Paper>
@@ -109,7 +109,7 @@ export const SprintBody = (props: SprintBodyProps) => {
             <Typography variant="h5">Released</Typography>
             <hr />
             {groupedStories
-              ? groupedStories.released.map((x: StorySummaryModel) => <StorySummaryCard data={x} />)
+              ? groupedStories.released.map((x: StorySummaryModel) => <StorySummaryCard key={x.id} data={x} />)
               : "Loading"
             }
           </Paper>

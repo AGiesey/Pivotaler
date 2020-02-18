@@ -38,9 +38,9 @@ namespace Web.Controllers
     }
 
     [HttpGet("SprintBacklog")]
-    public async Task<IActionResult> GetSprintBurndownStories()
+    public async Task<IActionResult> GetSprintBurndownStories(string userSearchId)
     {
-      var result = await storyApiCalls.GetSprintBacklogStories();
+      var result = await storyApiCalls.GetSprintBacklogStories(userSearchId);
       var summaries = _mapper.Map<IEnumerable<StorySummary>>(result);
 
       return Ok(summaries);

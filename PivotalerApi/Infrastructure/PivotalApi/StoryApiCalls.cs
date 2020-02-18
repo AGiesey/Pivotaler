@@ -20,7 +20,7 @@ namespace Infrastructure.PivotalApi
       jsonService = new JsonService();
     }
 
-    public async Task<IEnumerable<PivotalStory>> GetSprintBacklogStories()
+    public async Task<IEnumerable<PivotalStory>> GetSprintBacklogStories(string user)
     {
       var projectId = 836745;
 
@@ -28,7 +28,7 @@ namespace Infrastructure.PivotalApi
       builder.Port = -1;
 
       var query = HttpUtility.ParseQueryString(builder.Query);
-      query["filter"] = " owner:as and labels:\"sprint backlog\"";
+      query["filter"] = $"owner:{user} and labels:\"sprint backlog\"";
 
       builder.Query = query.ToString();
 

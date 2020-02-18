@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Paper, makeStyles, Typography, Grid, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
-import { Schedule } from '@material-ui/icons';
+import React, { useState, useEffect } from 'react';
+import { Paper, makeStyles, Typography, Grid, FormControl, InputLabel, Select, MenuItem, IconButton } from '@material-ui/core';
+import { Schedule, ChevronLeft, ChevronRight } from '@material-ui/icons';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -16,33 +16,24 @@ const useStyles = makeStyles(theme => ({
 }));
 
 interface SprintHeaderProps {
-
+  teamOptions: { name: string, id: number }[]
+  ownerOptions: { name: string, teamId: number, searchId: string }[]
+  selectedOwnerSearchId: string,
+  selectedTeamId: number,
+  onSelectTeam: (teamId: number) => void,
+  onSelectOwner: (searchId: string ) => void,
 };
 
 export const SprintHeader = (props: SprintHeaderProps) => {
   const classes = useStyles();
-  const [currentTeam, setCurrentTeam] = useState();
-  const [currentOwner, setCurrentOwner] = useState();
-
-  const teamOptions = [
-    {name: "All", value: "all"},
-    {name: "TFMS", value: "tfms"},
-    {name: "PLCS", value: "plcs"},
-    {name: "MDOT", value: "mdot"},
-  ]
-
-  const ownerOptions = [
-    {name: "Adam Giesey", value: 1},
-    {name: "Connor Robinson", value: 2},
-  ]
+  const { teamOptions, ownerOptions, selectedOwnerSearchId, selectedTeamId, onSelectTeam, onSelectOwner } = props
 
   const selectTeam = (e: any) => {
-    console.log(e);
-    // setCurrentTeam()
+    onSelectTeam(e.target.value);
   }
 
   const selectOwner = (e: any) => {
-    console.log(e)
+    onSelectOwner(e.target.value);
   }
 
   return (
@@ -52,7 +43,7 @@ export const SprintHeader = (props: SprintHeaderProps) => {
           <Typography variant="h3">Scrum Board</Typography>
         </Grid>
         <Grid item xs={2}>
-          <Typography align="right"><Schedule /> 5 Days Remaining</Typography>
+          <Typography align="right"><Schedule /> 9 Days Remaining</Typography>
         </Grid>
         <Grid item xs={12}>
           <FormControl className={classes.select}>
@@ -60,9 +51,9 @@ export const SprintHeader = (props: SprintHeaderProps) => {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={currentTeam}
+              value={selectedTeamId}
               onChange={selectTeam}>
-              {teamOptions.map(option => <MenuItem key={option.value} value={option.value}>{option.name}</MenuItem>)}
+              {teamOptions.map(option => <MenuItem key={option.id} value={option.id}>{option.name}</MenuItem>)}
             </Select>
           </FormControl>
           <FormControl className={classes.select}>
@@ -70,14 +61,19 @@ export const SprintHeader = (props: SprintHeaderProps) => {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={currentOwner}
+              value={selectedOwnerSearchId}
               onChange={selectOwner}>
-              {ownerOptions.map(option => <MenuItem key={option.value} value={option.value}>{option.name}</MenuItem>)}
+              {ownerOptions.map((option: any) => <MenuItem key={option.searchId} value={option.searchId}>{option.name}</MenuItem>)}
             </Select>
           </FormControl>
+          <IconButton color="secondary">
+            <ChevronLeft />
+          </IconButton>
+          <IconButton color="secondary">
+            <ChevronRight />
+          </IconButton>
         </Grid>
       </Grid>
-      
     </Paper>
   )
 }

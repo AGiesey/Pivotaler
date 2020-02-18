@@ -14,13 +14,5 @@ namespace Web.Controllers
     {
       storyApiCalls = new StoryApiCalls();
     }
-
-    [HttpGet]
-    public async Task<IActionResult> GetSprintBacklogStories()
-    {
-      var result = await storyApiCalls.GetSprintBacklogStories();
-      return Ok(result);
-    }
-    
   }
 }
