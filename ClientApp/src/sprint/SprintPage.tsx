@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getSprintBacklogStories } from '../story/storyApiService';
+import { getSprintBacklogStories } from '../sprint/sprintApiService';
 import { makeStyles, Grid } from '@material-ui/core';
 import { SprintHeader } from './SprintHeader';
 import { SprintBody } from './SprintBody';

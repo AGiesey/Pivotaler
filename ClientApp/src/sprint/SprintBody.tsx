@@ -86,7 +86,7 @@ export const SprintBody = (props: SprintBodyProps) => {
         </Grid>
         <Grid className={classes.lane} item xs={2}>
           <Paper className={classes.lane} variant="outlined">
-            <Typography variant="h5">Finished</Typography>
+            <Typography variant="h5">Code Review</Typography>
             <hr />
             {groupedStories
               ? groupedStories.finished.map((x: StorySummaryModel) => <StorySummaryCard key={x.id} data={x} />)
@@ -96,7 +96,7 @@ export const SprintBody = (props: SprintBodyProps) => {
         </Grid>
         <Grid className={classes.lane} item xs={2}>
           <Paper className={classes.lane} variant="outlined">
-            <Typography variant="h5">Delivered</Typography>
+            <Typography variant="h5">Accept / Reject</Typography>
             <hr />
             {groupedStories
               ? groupedStories.delivered.map((x: StorySummaryModel) => <StorySummaryCard key={x.id} data={x} />)
@@ -106,7 +106,7 @@ export const SprintBody = (props: SprintBodyProps) => {
         </Grid>
         <Grid className={classes.lane} item xs={2}>
           <Paper className={classes.lane} variant="outlined">
-            <Typography variant="h5">Released</Typography>
+            <Typography variant="h5">Done Done</Typography>
             <hr />
             {groupedStories
               ? groupedStories.released.map((x: StorySummaryModel) => <StorySummaryCard key={x.id} data={x} />)

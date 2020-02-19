@@ -43,6 +43,31 @@ namespace Infrastructure.PivotalApi
 
     }
 
+    public async Task<PivotalSearchResult> Search(string user)
+    {
+      var projectId = 836745;
+
+      var builder = new UriBuilder($"{PivotalApiV5BaseUri}/projects/{projectId}/search");
+      builder.Port = -1;
+
+      var query = HttpUtility.ParseQueryString(builder.Query);
+      query["query"] = $"owner:{user} AND labels:\"sprint backlog\" AND -state:unscheduled";
+
+      builder.Query = query.ToString();
+
+      var requestUrl = builder.ToString();
+
+      using(var client = new HttpClient())
+      {
+          client.DefaultRequestHeaders.Add(PivotalKeyHeader, PaulsPivotalApiKey);
+          
+          var result = await client.GetStringAsync(requestUrl);
+          
+          return jsonService.JsonStringToObject<PivotalSearchResult>(result);
+      }
+
+    }
+
     public async Task<PivotalStory> GetStoryById(int id)
     {
       var projectId = 836745;
