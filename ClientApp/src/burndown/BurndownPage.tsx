@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { getBurndown } from './burndownPivotalService'
 import { makeStyles, Paper, Typography } from '@material-ui/core';
+import { Sidebar } from '../navigation/Sidebar';
 import { BurndownChart } from './BurndownChart';
 import { BurndownDatapoint } from './burndownInterfaces';
 
@@ -9,12 +9,13 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-between",
   },
   backlogPaper: {
     width: "80%",
     height: "80%",
-    padding: "1em"
+    padding: "1em",
+    marginRight: "5%"
   },
   pageTitle: {
     marginBottom: theme.spacing(3)
@@ -33,13 +34,14 @@ const BurndownPage: React.FC = () => {
 
   return (
     <div className={classes.root}>
+      <Sidebar />
       <Paper className={classes.backlogPaper}>
         <Typography className={classes.pageTitle} variant="h4">Sprint Burndown </Typography>
-          {/* {
+          {
             burndownData.length
               ? <BurndownChart data={burndownData} />
               : <Typography>Loading...</Typography>
-          }    */}
+          }   
       </Paper>
     </div>
   )

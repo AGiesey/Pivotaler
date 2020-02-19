@@ -3,6 +3,7 @@ import { getSprintBacklogStories } from '../sprint/sprintApiService';
 import { makeStyles, Grid } from '@material-ui/core';
 import { SprintHeader } from './SprintHeader';
 import { SprintBody } from './SprintBody';
+import { Sidebar } from '../navigation/Sidebar';
 
 const teams = [
   {name: 'All', id: -1},
@@ -36,6 +37,7 @@ const users = [
 const useStyles = makeStyles(theme => ({
   root: {
     padding: theme.spacing(2),
+    display: 'flex'
   },
   pageHeader: {
     height: '8em',
@@ -103,20 +105,23 @@ export const SprintPage = () => {
   }
 
   return (
-    <Grid className={`${classes.root}`} container spacing={2}>
-      <Grid className={`${classes.outlined} ${classes.pageHeader}`} item xs={12}>
-        <SprintHeader 
-          teamOptions={teams}
-          ownerOptions={filteredOwners}
-          selectedOwnerSearchId={currentOwner ? currentOwner.searchId : users[0].searchId}
-          selectedTeamId={currentTeam ? currentTeam.id : teams[0].id} 
-          onSelectTeam={selectTeam}
-          onSelectOwner={selectOwner}
-        />
+    <div className={`${classes.root}`}>
+      <Sidebar />
+      <Grid container spacing={2}>
+        <Grid className={`${classes.outlined} ${classes.pageHeader}`} item xs={12}>
+          <SprintHeader 
+            teamOptions={teams}
+            ownerOptions={filteredOwners}
+            selectedOwnerSearchId={currentOwner ? currentOwner.searchId : users[0].searchId}
+            selectedTeamId={currentTeam ? currentTeam.id : teams[0].id} 
+            onSelectTeam={selectTeam}
+            onSelectOwner={selectOwner}
+          />
+        </Grid>
+        <Grid className={`${classes.outlined} ${classes.pageBody}`} item xs={12}>
+          <SprintBody stories={backlogStories}/>
+        </Grid>
       </Grid>
-      <Grid className={`${classes.outlined} ${classes.pageBody}`} item xs={12}>
-        <SprintBody stories={backlogStories}/>
-      </Grid>
-    </Grid>
+    </div>
   )
 }
