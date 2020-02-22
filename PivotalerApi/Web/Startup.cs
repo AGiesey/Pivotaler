@@ -55,20 +55,6 @@ namespace Web
             services.AddAuthentication("cookies")
                 .AddCookie("cookies", options => options.LoginPath = "/Home/Login");
 
-            // services.AddAuthentication(options => { 
-            //     options.DefaultScheme = "Cookies"; 
-            // }).AddCookie("Cookies", options => {
-            //     options.Cookie.Name = "auth_cookie";
-            //     options.Cookie.SameSite = SameSiteMode.None;
-            //     options.Events = new CookieAuthenticationEvents
-            //     {                          
-            //         OnRedirectToLogin = redirectContext =>
-            //         {
-            //             redirectContext.HttpContext.Response.StatusCode = 401;
-            //             return Task.CompletedTask;
-            //         }
-            //     };                
-            // });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -82,11 +68,10 @@ namespace Web
             app.UseCors(MyAllowSpecificOrigins);
 
             // app.UseHttpsRedirection();
+            
             app.UseAuthentication();
-
             app.UseRouting();
-
-            // app.UseAuthorization();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
