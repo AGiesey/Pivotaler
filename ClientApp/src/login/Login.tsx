@@ -41,9 +41,10 @@ export const Login: React.FC = () => {
 
   const onLogin = (): void => {
     login({email: email, password: password})
-      .then(result => console.log("result", result),
-      error => console.log("ERROR", error))
-    //history.push('./burndown');
+      .then(result => {
+        history.push('./sprint')
+      },
+      error => console.error("ERROR", error))
   }
 
   const goToRegister = (e: React.MouseEvent<HTMLButtonElement>): void => {

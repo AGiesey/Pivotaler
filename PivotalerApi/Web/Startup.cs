@@ -42,7 +42,8 @@ namespace Web
                 {
                     builder.WithOrigins("http://localhost:3000",
                                         "https://localhost:3000")
-                                        .AllowAnyHeader()
+                                        .AllowAnyHeader() // TODO: maybe specify headers if security risk?
+                                        .AllowCredentials() // TODO: docs say this is a risk, but I'm not allowing any origin so maybe ok
                                         .AllowAnyMethod();
                 });
             });
@@ -53,7 +54,7 @@ namespace Web
             services.AddControllers();
 
             // TODO: I don't really know if I actually need options.LoginPath
-            // TODO: Add bearer token stuff?
+            // TODO: this authentication is for the birds, try JWT or Bearer token
             services.AddAuthentication("cookies")
                 .AddCookie("cookies", options => {
                     options.LoginPath = "/login";

@@ -7,7 +7,8 @@ export const getSprintBacklogStories = (searchId: string) => {
   const options = {
     params: {
       "userSearchId": searchId
-    }
+    },
+    withCredentials: true
   }
   return axios.get<StorySummaryModel[]>(`${apiUriBase}/search/swimLane`, options)
     .then(response => response.data)
