@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, Link, Switch, Redirect } from "react-router-dom";
 import { Toolbar, Typography, AppBar, makeStyles, Button } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
@@ -36,7 +36,7 @@ const App: React.FC = () => {
   const classes = useStyles();
 
   //TODO: make a real auth
-  const [auth, setAuth] = useState(false);
+  // const [auth, setAuth] = useState(false);
 
   return (
     <ThemeProvider theme={pivotalerTheme} >
@@ -44,22 +44,24 @@ const App: React.FC = () => {
         <Router>
           <AppBar position="static">
             <Toolbar>
-              <img src="./brain-icon.png" height="35"/>
+              <img src="./brain-icon.png" alt="brain logo" height="35"/>
               <Typography variant="h6" className={classes.title}>
                 Pivotal<span className={classes.titleAddendum}>er</span>
               </Typography>
-              {
+                <Button color="inherit" component={Link} to={'/login'}>Login</Button>
+              {/* {
                 auth 
                   ? <Button color="inherit" component={Link} to={'/login'}>Logout</Button>
                   : <Button color="inherit" component={Link} to={'/login'}>Login</Button>
-              }
+              } */}
             </Toolbar>
             
           </AppBar>
           <div className={classes.body}>
             <Switch>
               <Route exact path="/" redir>
-                { auth ? <Redirect to="/burndown" /> : <Redirect to="/login" /> }
+                <Redirect to="/login" />
+                {/* { auth ? <Redirect to="/burndown" /> : <Redirect to="/login" /> } */}
               </Route>
               <Route path="/login">
                 <Login />

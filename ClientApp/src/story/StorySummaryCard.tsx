@@ -55,7 +55,7 @@ const getStoryIcon = (storyType: storyTypes) => {
 
 export const StorySummaryCard = (props: StorySummaryCardProps) => {
   const classes = useStyles();
-  const {id, title, storyType, estimate, ownerIds } = props.data;
+  const { title, storyType, estimate } = props.data;
   
   return (
     <Card className={classes.root}>

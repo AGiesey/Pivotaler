@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { makeStyles, Paper, Typography } from '@material-ui/core';
-import { BurndownChart } from './BurndownChart';
-import { BurndownDatapoint } from './burndownInterfaces';
+// import { BurndownChart } from './BurndownChart';
+// import { BurndownDatapoint } from './burndownInterfaces';
 import { SidebarPageLayout } from '../layout/SidebarPageLayout';
 
 const useStyles = makeStyles(theme => ({
@@ -17,18 +17,18 @@ const useStyles = makeStyles(theme => ({
 
 export const BurndownPage: React.FC = () => {
   const classes = useStyles();
-  const [burndownData, setBurndownData] = useState([] as BurndownDatapoint[])
+  // const [burndownData, setBurndownData] = useState([] as BurndownDatapoint[])
 
   return (
     <SidebarPageLayout>
       
         <Paper className={classes.root}>
           <Typography className={classes.pageTitle} variant="h4">Sprint Burndown </Typography>
-            {
+            {/* {
               burndownData.length
                 ? <BurndownChart data={burndownData} />
                 : <Typography>Loading...</Typography>
-            }   
+            }    */}
         </Paper>
       
     </SidebarPageLayout>

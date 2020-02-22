@@ -1,7 +1,7 @@
 import axios from "axios";
 import { RegisterModel } from "./registerModel";
 
-const apiUriBase = "http://localhost:5000";
+const apiUriBase = "http://localhost:5000/api";
 
 export const register = (registerModel: RegisterModel): Promise<any> => {
     return axios.post(`${apiUriBase}/register`, registerModel);

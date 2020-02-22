@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getSprintBacklogStories } from '../sprint/sprintApiService';
-import { makeStyles, Grid } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 import { SprintHeader } from './SprintHeader';
 import { SprintBody } from './SprintBody';
 import { SidebarPageLayout } from '../layout/SidebarPageLayout';
@@ -63,13 +63,13 @@ export const SprintPage = () => {
 
   /* CURRENT TEAM */
   useEffect(() => {
-    if (currentTeam == teams[0]) {
+    if (currentTeam === teams[0]) {
       setFilteredOwners(users);
       return;
     }
 
     setFilteredOwners(users.filter(x => x.teamId === currentTeam.id));
-  }, [currentTeam, users]);
+  }, [currentTeam]);
 
   /* FILTERED OWNERS */
   useEffect(() => {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { makeStyles, Paper, Grid, Typography } from '@material-ui/core';
+import { makeStyles, Paper, Typography } from '@material-ui/core';
 import { StorySummaryModel, storyStates } from '../story/storyObjects';
 import { StorySummaryCard } from '../story/StorySummaryCard';
 
