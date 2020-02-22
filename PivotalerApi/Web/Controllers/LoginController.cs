@@ -31,7 +31,7 @@ namespace Web.Controllers
         if (user != null && await userManager.CheckPasswordAsync(user, model.Password))
         {
             var identity = new ClaimsIdentity("cookies");
-            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id));
+            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.UserId));
             identity.AddClaim(new Claim(ClaimTypes.Name, user.UserName));
 
             await HttpContext.SignInAsync("cookies", new ClaimsPrincipal(identity));
@@ -51,7 +51,7 @@ namespace Web.Controllers
       // TODO: Use AutoMapper instead.
       var newUser = new User
       {
-        Id = Guid.NewGuid().ToString(),
+        UserId = Guid.NewGuid().ToString(),
         UserName = userModel.UserName,
         Email = userModel.Email,
       };
@@ -59,7 +59,7 @@ namespace Web.Controllers
       await userManager.CreateAsync(newUser, userModel.Password);
 
       // TODO: Use URI creator or whatever
-      return Created($"/api/users/{newUser.Id}", new {});
+      return Created($"/api/users/{newUser.UserId}", new {});
     }
     
   }
