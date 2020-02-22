@@ -52,8 +52,13 @@ namespace Web
 
             services.AddControllers();
 
+            // TODO: I don't really know if I actually need options.LoginPath
+            // TODO: Add bearer token stuff?
             services.AddAuthentication("cookies")
-                .AddCookie("cookies", options => options.LoginPath = "/Home/Login");
+                .AddCookie("cookies", options => {
+                    options.LoginPath = "/login";
+                    // TODO: Expire the cookie? options.ExpireTimeSpan 
+                });
 
         }
 
