@@ -52,6 +52,9 @@ namespace Web
 
             services.AddControllers();
 
+            services.AddAuthentication("cookies")
+                .AddCookie("cookies", options => options.LoginPath = "/Home/Login");
+
             // services.AddAuthentication(options => { 
             //     options.DefaultScheme = "Cookies"; 
             // }).AddCookie("Cookies", options => {
@@ -79,6 +82,7 @@ namespace Web
             app.UseCors(MyAllowSpecificOrigins);
 
             // app.UseHttpsRedirection();
+            app.UseAuthentication();
 
             app.UseRouting();
 

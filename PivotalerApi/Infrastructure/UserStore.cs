@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure
 {
-  public class UserStore : IUserStore<User>, IUserPasswordStore<User>
+  public class UserStore : IUserStore<User>, IUserPasswordStore<User>, IUserEmailStore<User>
   {
     private readonly PostgressDbContext context;
 
@@ -34,6 +34,11 @@ namespace Infrastructure
         // TODO: I don't know what to dispose...
     }
 
+    public async Task<User> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken)
+    {
+      return await context.Users.SingleOrDefaultAsync(x => x.NormalizedEmail == normalizedEmail);
+    }
+
     public async Task<User> FindByIdAsync(string userId, CancellationToken cancellationToken)
     {
         return await context.Users.FindAsync(userId);
@@ -42,6 +47,22 @@ namespace Infrastructure
     public async Task<User> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
     {
         return await context.Users.SingleOrDefaultAsync(x => x.NormalizedUserName == normalizedUserName);
+    }
+
+    public Task<string> GetEmailAsync(User user, CancellationToken cancellationToken)
+    {
+      return Task.FromResult(user.Email);
+    }
+
+    public Task<bool> GetEmailConfirmedAsync(User user, CancellationToken cancellationToken)
+    {
+      // TODO: implement this correctly
+      return Task.FromResult(user.EmailConfirmed);
+    }
+
+    public Task<string> GetNormalizedEmailAsync(User user, CancellationToken cancellationToken)
+    {
+      return Task.FromResult(user.Email.ToUpper());
     }
 
     public Task<string> GetNormalizedUserNameAsync(User user, CancellationToken cancellationToken)
@@ -67,6 +88,24 @@ namespace Infrastructure
     public Task<bool> HasPasswordAsync(User user, CancellationToken cancellationToken)
     {
         return Task.FromResult(user.PasswordHash != null);
+    }
+
+    public Task SetEmailAsync(User user, string email, CancellationToken cancellationToken)
+    {
+      user.Email = email;
+      return Task.CompletedTask;
+    }
+
+    public Task SetEmailConfirmedAsync(User user, bool confirmed, CancellationToken cancellationToken)
+    {
+      user.EmailConfirmed = confirmed;
+      return Task.CompletedTask;
+    }
+
+    public Task SetNormalizedEmailAsync(User user, string normalizedEmail, CancellationToken cancellationToken)
+    {
+        user.NormalizedEmail = normalizedEmail;
+        return Task.CompletedTask;
     }
 
     public Task SetNormalizedUserNameAsync(User user, string normalizedName, CancellationToken cancellationToken)

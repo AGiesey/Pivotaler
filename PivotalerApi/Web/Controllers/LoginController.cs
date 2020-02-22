@@ -1,6 +1,8 @@
 using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Data.Entities.Identity;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Web.Models.User;
@@ -20,9 +22,27 @@ namespace Web.Controllers
     }
 
     [HttpPost("/Login")]
-    public IActionResult Login(LoginModel model)
+    public async Task<IActionResult> Login(LoginModel model)
     {
-      return Ok("Logged In");
+      if(ModelState.IsValid)
+      {
+        var user = await userManager.FindByEmailAsync(model.Email);
+
+        if (user != null && await userManager.CheckPasswordAsync(user, model.Password))
+        {
+            var identity = new ClaimsIdentity("cookies");
+            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id));
+            identity.AddClaim(new Claim(ClaimTypes.Name, user.UserName));
+
+            await HttpContext.SignInAsync("cookies", new ClaimsPrincipal(identity));
+
+            return Ok();
+        }
+
+        ModelState.AddModelError("", "Invalid UserName or Password");
+      }
+
+      return BadRequest();
     }
 
     [HttpPost("/Register")]
