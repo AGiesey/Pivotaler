@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom'
 import { makeStyles, Paper, Typography, TextField, Button } from "@material-ui/core";
+import { login } from './loginApiService';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -11,6 +12,7 @@ const useStyles = makeStyles(theme => ({
   },
   loginCard: {
     width: "20%",
+    minWidth: "25em",
     padding: "1em"
   },
   loginForm: {
@@ -34,9 +36,14 @@ const useStyles = makeStyles(theme => ({
 export const Login: React.FC = () => {
   const classes = useStyles();
   const history = useHistory();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const onLogin = (e: React.MouseEvent<HTMLButtonElement>): void => {
-    history.push('./burndown');
+  const onLogin = (): void => {
+    login({email: email, password: password})
+      .then(result => console.log("result", result),
+      error => console.log("ERROR", error))
+    //history.push('./burndown');
   }
 
   const goToRegister = (e: React.MouseEvent<HTMLButtonElement>): void => {
@@ -53,7 +60,9 @@ export const Login: React.FC = () => {
             name="email" 
             label="Email"
             type="text"
-            variant="outlined" 
+            variant="outlined"
+            value={email}
+            onChange={(e: any) => setEmail(e.target.value)} 
             placeholder="Email" 
             autoFocus/>
           <TextField 
@@ -61,7 +70,9 @@ export const Login: React.FC = () => {
             name="password" 
             label="Password" 
             type="password" 
-            variant="outlined" 
+            variant="outlined"
+            value={password}
+            onChange={(e: any) => setPassword(e.target.value)}
             placeholder="Password" />
           <div className={classes.actionsContainer}>
             <Button 
