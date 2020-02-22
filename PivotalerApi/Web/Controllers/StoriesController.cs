@@ -2,12 +2,14 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Infrastructure.PivotalApi;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Web.Models.Story;
 
 namespace Web.Controllers
 {
   [ApiController]
+  [Authorize]
   [Route("api/[controller]")]
   public class StoriesController : ControllerBase
   {
