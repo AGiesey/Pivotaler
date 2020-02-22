@@ -3,7 +3,7 @@ import { getSprintBacklogStories } from '../sprint/sprintApiService';
 import { makeStyles, Grid } from '@material-ui/core';
 import { SprintHeader } from './SprintHeader';
 import { SprintBody } from './SprintBody';
-import { Sidebar } from '../navigation/Sidebar';
+import { SidebarPageLayout } from '../layout/SidebarPageLayout';
 
 const teams = [
   {name: 'All', id: -1},
@@ -36,21 +36,22 @@ const users = [
 
 const useStyles = makeStyles(theme => ({
   root: {
-    padding: theme.spacing(2),
-    display: 'flex'
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
   },
   pageHeader: {
     height: '8em',
-    marginBottom: theme.spacing(4)
+    flexShrink: 0,
+    marginBottom: theme.spacing(2),
+    padding: theme.spacing(1)
   },
   pageBody: {
-    // flexGrow: 1
-    height: "calc(100% - 8em - 32px)"
+    flexGrow: 1,
+    display: 'flex',
+    padding: theme.spacing(1)
   },
-  // TODO: for development, remove.
-  outlined: {
-    // border: '2px solid green',
-  }
 }));
 
 export const SprintPage = () => {
@@ -105,10 +106,9 @@ export const SprintPage = () => {
   }
 
   return (
-    <div className={`${classes.root}`}>
-      <Sidebar />
-      <Grid container spacing={2}>
-        <Grid className={`${classes.outlined} ${classes.pageHeader}`} item xs={12}>
+    <SidebarPageLayout>
+      <div className={classes.root}>
+        <div className={classes.pageHeader}>
           <SprintHeader 
             teamOptions={teams}
             ownerOptions={filteredOwners}
@@ -117,11 +117,11 @@ export const SprintPage = () => {
             onSelectTeam={selectTeam}
             onSelectOwner={selectOwner}
           />
-        </Grid>
-        <Grid className={`${classes.outlined} ${classes.pageBody}`} item xs={12}>
+        </div>
+        <div className={classes.pageBody}>
           <SprintBody stories={backlogStories}/>
-        </Grid>
-      </Grid>
-    </div>
+        </div>
+      </div>
+    </SidebarPageLayout>
   )
 }

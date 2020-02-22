@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Link, Switch, Redirect } from "react-ro
 import { Toolbar, Typography, AppBar, makeStyles, Button } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { pivotalerTheme } from './muiTheme/pivotalerTheme';
-import BurndownPage from './burndown/BurndownPage';
+import { BurndownPage } from './burndown/BurndownPage';
 import { Login } from './login/Login';
 import { Register } from './register/Register';
 import { SprintPage } from './sprint/SprintPage';
@@ -19,6 +19,7 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     flexGrow: 1,
+    marginLeft: theme.spacing(1),
   },
   titleAddendum: {
     fontWeight: "bold",
@@ -27,7 +28,6 @@ const useStyles = makeStyles(theme => ({
   },
   body: {
     height: "calc(100vh - 64px)",
-    paddingTop: ".5em",
     display: "flex",
   }
 }));
@@ -44,6 +44,7 @@ const App: React.FC = () => {
         <Router>
           <AppBar position="static">
             <Toolbar>
+              <img src="./brain-icon.png" height="35"/>
               <Typography variant="h6" className={classes.title}>
                 Pivotal<span className={classes.titleAddendum}>er</span>
               </Typography>

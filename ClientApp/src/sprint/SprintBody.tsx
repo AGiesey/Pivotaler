@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles, Paper, Grid, Typography } from '@material-ui/core';
 import { StorySummaryModel, storyStates } from '../story/storyObjects';
-// import { StoryDetailsCard } from '../story/StoryDetailsCard';
 import { StorySummaryCard } from '../story/StorySummaryCard';
 
 const useStyles = makeStyles(theme => ({
   root: {
+    flexFrow: 1,
     width: '100%',
-    height: '100%',
-    // padding: theme.spacing(2)
+    padding: theme.spacing(1)
   },
   swimLaneContainer: {
-    height: `100%`,
+    height: '100%',
     overflow: 'auto',
-    paddingRight: theme.spacing(2)
+    display: 'flex',
+    justifyContent: 'space-between',
   },
   lane: {
-    height: '100%',
-    padding: theme.spacing(2)
+    width: `calc(100% - ${theme.spacing(2)}px)`,
+    height: `calc(100% - ${theme.spacing(4)}px)`,
+    padding: theme.spacing(1)
   }
 }))
 
@@ -57,14 +58,11 @@ export const SprintBody = (props: SprintBodyProps) => {
 
     setGroupedStories(groups);
   }, [stories])
-  
+
   return (
     <Paper className={classes.root}>
-      <Grid className={classes.swimLaneContainer} container justify="flex-end" spacing={2}>
-        <Grid item xs={1}>
-
-        </Grid>
-        <Grid item xs={2}>
+      <div className={classes.swimLaneContainer}>
+        <div className={classes.lane}>
           <Paper className={classes.lane} variant="outlined">
             <Typography variant="h5">Unstarted</Typography>
             <hr />
@@ -73,18 +71,18 @@ export const SprintBody = (props: SprintBodyProps) => {
               : "Loading"
             }
           </ Paper>
-        </Grid>
-        <Grid className={classes.lane} item xs={2}>
-          <Paper className={classes.lane} variant="outlined">
+        </div>
+        <div className={classes.lane}>
+        <Paper className={classes.lane} variant="outlined">
             <Typography variant="h5">Started</Typography>
             <hr />
             {groupedStories
               ? groupedStories.started.map((x: StorySummaryModel) => <StorySummaryCard key={x.id} data={x} />)
               : "Loading"
             }
-          </Paper>
-        </Grid>
-        <Grid className={classes.lane} item xs={2}>
+          </ Paper>
+        </div>
+        <div className={classes.lane}>
           <Paper className={classes.lane} variant="outlined">
             <Typography variant="h5">Code Review</Typography>
             <hr />
@@ -93,8 +91,8 @@ export const SprintBody = (props: SprintBodyProps) => {
               : "Loading"
             }
           </Paper>
-        </Grid>
-        <Grid className={classes.lane} item xs={2}>
+        </div>
+        <div className={classes.lane}>
           <Paper className={classes.lane} variant="outlined">
             <Typography variant="h5">Accept / Reject</Typography>
             <hr />
@@ -103,8 +101,8 @@ export const SprintBody = (props: SprintBodyProps) => {
               : "Loading"
             }
           </Paper>
-        </Grid>
-        <Grid className={classes.lane} item xs={2}>
+        </div>
+        <div className={classes.lane}>
           <Paper className={classes.lane} variant="outlined">
             <Typography variant="h5">Done Done</Typography>
             <hr />
@@ -113,8 +111,8 @@ export const SprintBody = (props: SprintBodyProps) => {
               : "Loading"
             }
           </Paper>
-        </Grid>
-      </Grid>
+        </div>
+      </div>
     </Paper>
   )
 }
