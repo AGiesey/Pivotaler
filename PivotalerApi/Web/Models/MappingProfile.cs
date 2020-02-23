@@ -1,6 +1,7 @@
 using AutoMapper;
 using Data.Entities.Pivotal;
 using Infrastructure.PivotalApi.Models;
+using Web.Controllers.Models.Users;
 using Web.Models.Story;
 using Web.Models.User;
 
@@ -35,6 +36,9 @@ namespace Web.Models
         .IncludeMembers(s => s.PivotalUser);
 
       CreateMap<PivotalUser, UserModel>(MemberList.None);
+
+      CreateMap<PivotalUser, PivotalUserModel>()
+        .ReverseMap();
     }
   }
 }
