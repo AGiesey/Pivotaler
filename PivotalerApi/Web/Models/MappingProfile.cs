@@ -1,4 +1,5 @@
 using AutoMapper;
+using Data.Entities.Pivotal;
 using Infrastructure.PivotalApi.Models;
 using Web.Models.Story;
 using Web.Models.User;
@@ -30,7 +31,10 @@ namespace Web.Models
         .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => src.Updated_At))
         .ForMember(dest => dest.BlockedStoryIds, opt => opt.MapFrom(src => src.Blocked_Story_Ids));
 
-      CreateMap<Data.Entities.Identity.User, UserModel>();
+      CreateMap<Data.Entities.Identity.User, UserModel>()
+        .IncludeMembers(s => s.PivotalUser);
+
+      CreateMap<PivotalUser, UserModel>(MemberList.None);
     }
   }
 }
