@@ -4,6 +4,8 @@ using Infrastructure.PivotalApi.Models;
 using Web.Controllers.Models.Users;
 using Web.Models.Story;
 using Web.Models.User;
+using Web.Models.Agile;
+using Data.Entities.Agile;
 
 namespace Web.Models
 {
@@ -39,6 +41,12 @@ namespace Web.Models
 
       CreateMap<PivotalUser, PivotalUserModel>()
         .ReverseMap();
+
+      CreateMap<Iteration, IterationModel>()
+        .ReverseMap();
+        // .IncludeMembers(s => s.DataPoints);
+
+      CreateMap<IterationDataPoint, IterationDataPointModel>(MemberList.None);
     }
   }
 }
