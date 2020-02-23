@@ -1,4 +1,5 @@
 using Data.Entities.Identity;
+using Data.Entities.Iteration;
 using Data.Entities.Pivotal;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +13,8 @@ namespace Data
     }
     public DbSet<User> Users { get; set;}
     public DbSet<PivotalUser> PivotalUsers { get; set; }
+    public DbSet<Iteration> Iterations { get; set; }
+    public DbSet<IterationDataPoint> IterationDataPoints { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
