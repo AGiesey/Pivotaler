@@ -1,6 +1,7 @@
 using AutoMapper;
 using Infrastructure.PivotalApi.Models;
 using Web.Models.Story;
+using Web.Models.User;
 
 namespace Web.Models
 {
@@ -28,6 +29,8 @@ namespace Web.Models
         .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.Created_At))
         .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => src.Updated_At))
         .ForMember(dest => dest.BlockedStoryIds, opt => opt.MapFrom(src => src.Blocked_Story_Ids));
+
+      CreateMap<Data.Entities.Identity.User, UserModel>();
     }
   }
 }
