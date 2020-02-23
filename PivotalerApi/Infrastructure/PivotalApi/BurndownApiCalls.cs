@@ -1,18 +1,30 @@
+using System;
 using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Infrastructure.PivotalApi
 {
-  public class BurndownApiCalls
+  public class BurndownApiCalls : IBurndownApiCalls
   {
     private readonly HttpClient client;
-    private readonly JsonService jsonService;
+    private readonly IJsonService jsonService;
     const string PivotalApiV5BaseUri = "https://www.pivotaltracker.com/services/v5";
-    const string PaulsPivotalApiKey = "de3c3f98865f45ba9be2207777392782";
+    const string AdamsPivotalApiKey = "07378ad4d71dd40a76f8e787ac1b75ab";
     const string PivotalKeyHeader = "X-TrackerToken";
-    public BurndownApiCalls()
+    public BurndownApiCalls(IJsonService jsonService)
     {
       client = new HttpClient();
-      jsonService = new JsonService();
+      this.jsonService = jsonService;
     }
+
+    public Task<string> GetBurndown(DateTime startDate, DateTime endDate)
+    {
+      return Task.FromResult($"{startDate.ToString()} {endDate.ToString()}");
+    }
+  }
+
+  public interface IBurndownApiCalls
+  {
+    Task<string> GetBurndown(DateTime startDate, DateTime endDate);
   }
 }
