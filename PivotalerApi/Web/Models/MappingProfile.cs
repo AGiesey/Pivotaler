@@ -46,7 +46,8 @@ namespace Web.Models
         .ReverseMap();
         // .IncludeMembers(s => s.DataPoints);
 
-      CreateMap<IterationDataPoint, IterationDataPointModel>(MemberList.None);
+      CreateMap<IterationDataPoint, IterationDataPointModel>(MemberList.None)
+        .ReverseMap();
     }
   }
 }

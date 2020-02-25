@@ -1,9 +1,11 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Data;
 using Data.Entities.Agile;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Web.Models.Agile;
 
 namespace Web.Controllers
@@ -23,33 +25,47 @@ namespace Web.Controllers
 
     [HttpGet]
     [Route("{iterationId}")]
-    public Task<IActionResult> GetIteration(int iterationId)
+    public async Task<IActionResult> GetIteration(int iterationId)
     {
-      throw new NotImplementedException();
+      var result = await dbContext.Iterations
+        .Include(x => x.DataPoints)
+        .SingleOrDefaultAsync(x => x.IterationId == iterationId);
+
+      if (result != null) 
+      {
+        return Ok(mapper.Map<IterationModel>(result));
+      }
+
+      return NotFound();
     }
 
     [HttpPost]
     public async Task<IActionResult> CreateIteration(IterationModel model)
     {
-        // TODO: Why  doesn't the mapper work?
-        // var entity = Mapper.Map<Iteration>(model);
-        var entity = new Iteration {
-          StartDate = model.StartDate,
-          EndDate = model.EndDate,
-          InitialPoints = model.InitialPoints
-        };
+        var entity = mapper.Map<Iteration>(model);
 
         await dbContext.AddAsync(entity);
         await dbContext.SaveChangesAsync();
 
+        // TODO: Return 201 with location header
         return Ok();
     }
 
     [HttpPut]
     [Route("{iterationId}")]
-    public Task<IActionResult> UpdateIteration(int iterationId, IterationModel model)
+    public async Task<IActionResult> UpdateIteration(int iterationId, IterationModel model)
     {
-      throw new NotImplementedException();
+      var existingIteration = await dbContext.Iterations
+        .SingleOrDefaultAsync(x => x.IterationId == iterationId);
+
+      if (existingIteration != null)
+      {
+        mapper.Map<IterationModel, Iteration>(model, existingIteration);
+        await dbContext.SaveChangesAsync();
+        return Ok(mapper.Map<IterationModel>(existingIteration));
+      }
+
+      return BadRequest();
     }
 
     [HttpGet]
@@ -77,9 +93,19 @@ namespace Web.Controllers
 
     [HttpPut]
     [Route("datapoint/{datapointId}")]
-    public Task<IActionResult> UpdateDataPoint(int datapointId, IterationDataPointModel model)
+    public async Task<IActionResult> UpdateDataPoint(int datapointId, IterationDataPointModel model)
     {
-      throw new NotImplementedException();
+      var existingDataPoint = await dbContext.IterationDataPoints
+        .SingleOrDefaultAsync(x => x.IterationDataPointId == datapointId);
+
+      if (existingDataPoint != null)
+      {
+        mapper.Map<IterationDataPointModel, IterationDataPoint>(model, existingDataPoint);
+        await dbContext.SaveChangesAsync();
+        return Ok(mapper.Map<IterationDataPointModel>(existingDataPoint));
+      }
+
+      return BadRequest();
     }
   }
 }
