@@ -8,6 +8,7 @@ namespace Web.Models.Agile
     public DateTime DateTime { get; set; }
     public int? IterationId { get; set; }
     public int? RemainingPoints { get; set; }
+    public int? RemainingEverhourPoints { get; set; }
   }
   
 }
