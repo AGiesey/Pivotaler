@@ -2,7 +2,7 @@ using System.Text.Json;
 
 namespace Infrastructure
 {
-  public class JsonService
+  public class JsonService : IJsonService
   {
     public T JsonStringToObject<T>(string jsonString)
     {
@@ -13,5 +13,10 @@ namespace Infrastructure
       
       return JsonSerializer.Deserialize<T>(jsonString, options);
     }
+  }
+
+  public interface IJsonService
+  {
+    T JsonStringToObject<T>(string jsonString);
   }
 }

@@ -77,7 +77,7 @@ namespace Infrastructure
 
     public Task<string> GetUserIdAsync(User user, CancellationToken cancellationToken)
     {
-        return Task.FromResult(user.Id);
+        return Task.FromResult(user.UserId);
     }
 
     public Task<string> GetUserNameAsync(User user, CancellationToken cancellationToken)

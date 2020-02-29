@@ -3,71 +3,23 @@ using System;
 using Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(PostgressDbContext))]
-    partial class PostgressDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200223025427_modify-pivotal-user")]
+    partial class modifypivotaluser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
                 .HasAnnotation("ProductVersion", "3.1.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
-
-            modelBuilder.Entity("Data.Entities.Agile.Iteration", b =>
-                {
-                    b.Property<int>("IterationId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int?>("InitialEverhourPoints")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("InitialPoints")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.HasKey("IterationId");
-
-                    b.ToTable("Iterations");
-                });
-
-            modelBuilder.Entity("Data.Entities.Agile.IterationDataPoint", b =>
-                {
-                    b.Property<int>("IterationDataPointId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<DateTime>("DateTime")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int>("IterationId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("RemainingEverhourPoints")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("RemainingPoints")
-                        .HasColumnType("integer");
-
-                    b.HasKey("IterationDataPointId");
-
-                    b.HasIndex("IterationId");
-
-                    b.ToTable("IterationDataPoints");
-                });
 
             modelBuilder.Entity("Data.Entities.Identity.User", b =>
                 {
@@ -114,15 +66,6 @@ namespace Data.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("PivotalUsers");
-                });
-
-            modelBuilder.Entity("Data.Entities.Agile.IterationDataPoint", b =>
-                {
-                    b.HasOne("Data.Entities.Agile.Iteration", "Iteration")
-                        .WithMany("DataPoints")
-                        .HasForeignKey("IterationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Data.Entities.Pivotal.PivotalUser", b =>

@@ -7,7 +7,7 @@ using Infrastructure.PivotalApi.Models;
 
 namespace Infrastructure.PivotalApi
 {
-  public class StoryApiCalls
+  public class StoryApiCalls : IStoryApiCalls
   {
     private readonly HttpClient client;
     private readonly JsonService jsonService;
@@ -86,5 +86,12 @@ namespace Infrastructure.PivotalApi
           return story;
       }
     }
+  }
+
+  public interface IStoryApiCalls
+  {
+    Task<IEnumerable<PivotalStory>> GetSprintBacklogStories(string user);
+    Task<PivotalSearchResult> Search(string user);
+    Task<PivotalStory> GetStoryById(int id);
   }
 }

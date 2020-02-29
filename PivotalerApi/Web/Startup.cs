@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using AutoMapper;
+using Infrastructure.PivotalApi;
 
 namespace Web
 {
@@ -50,6 +51,11 @@ namespace Web
 
             services.AddIdentityCore<User>(options => { });
             services.AddScoped<IUserStore<User>, UserStore>();
+
+            services.AddScoped<IJsonService, JsonService>();
+            services.AddScoped<IStoryApiCalls, StoryApiCalls>();
+            services.AddScoped<IBurndownApiCalls, BurndownApiCalls>();
+            
 
             services.AddControllers();
 

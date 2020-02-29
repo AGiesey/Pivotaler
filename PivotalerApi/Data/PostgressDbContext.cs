@@ -1,4 +1,6 @@
 using Data.Entities.Identity;
+using Data.Entities.Agile;
+using Data.Entities.Pivotal;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data 
@@ -10,6 +12,18 @@ namespace Data
     {
     }
     public DbSet<User> Users { get; set;}
+    public DbSet<PivotalUser> PivotalUsers { get; set; }
+    public DbSet<Iteration> Iterations { get; set; }
+    public DbSet<IterationDataPoint> IterationDataPoints { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+      modelBuilder.Entity<User>()
+        .HasOne(e => e.PivotalUser)
+        .WithOne(i => i.User)
+        .HasForeignKey<PivotalUser>(i => i.UserId);
+
+    }
 
   }
 }
