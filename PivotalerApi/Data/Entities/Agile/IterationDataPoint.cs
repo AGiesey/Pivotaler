@@ -17,6 +17,8 @@ namespace Data.Entities.Agile
 
     public int? RemainingPoints { get; set; }
 
+    public int? RemainingEverhourPoints { get; set; }
+
     [JsonIgnore]
     public Iteration Iteration { get; set; }
   }

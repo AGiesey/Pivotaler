@@ -15,6 +15,8 @@ namespace Data.Entities.Agile
 
     public int InitialPoints { get; set; }
 
+    public int? InitialEverhourPoints { get; set; }
+
     public IEnumerable<IterationDataPoint> DataPoints { get; set; }
 
   }

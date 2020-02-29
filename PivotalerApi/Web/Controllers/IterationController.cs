@@ -39,7 +39,26 @@ namespace Web.Controllers
       return NotFound();
     }
 
+    [HttpGet]
+    [Route("current")]
+    public async Task<IActionResult> GetCurrentIteration()
+    {
+      var today = DateTime.Now;
+      var result = await dbContext.Iterations
+        .Include(x => x.DataPoints)
+        .SingleOrDefaultAsync(x => x.StartDate < today && x.EndDate >= today);
+
+      if (result != null)
+      {
+        return Ok(mapper.Map<IterationModel>(result));
+      }
+
+      // Maybe not found is incorrect in this case.
+      return NotFound();
+    }
+
     [HttpPost]
+    [Route("new")]
     public async Task<IActionResult> CreateIteration(IterationModel model)
     {
         var entity = mapper.Map<Iteration>(model);
@@ -76,7 +95,7 @@ namespace Web.Controllers
     }
 
     [HttpPost]
-    [Route("{iterationId}/datapoints")]
+    [Route("{iterationId}/datapoints/new")]
     public async Task<IActionResult> CreateIterationDataPoint(int iterationId, IterationDataPointModel model )
     {
       var entity = new IterationDataPoint {
