@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom'
-import { Typography, TextField, makeStyles, Button } from '@material-ui/core';
+import { TextField, makeStyles, Button } from '@material-ui/core';
 import { IterationDataPointModel } from './burndownDataModels';
 import { addNewDatapoint } from './burndownApiService';
 
