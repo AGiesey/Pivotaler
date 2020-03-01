@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Data.Entities.Agile;
 
-namespace Web.Models.Agile
+namespace Infrastructure.Models
 {
   public class IterationModel
   {

@@ -1,6 +1,6 @@
 using System;
 
-namespace Web.Models.Agile
+namespace Infrastructure.Models
 {
   public class IterationDataPointModel
   {

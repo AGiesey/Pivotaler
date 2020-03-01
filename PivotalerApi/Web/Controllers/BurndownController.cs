@@ -1,14 +1,12 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Data;
+using Infrastructure.Models;
 using Infrastructure.PivotalApi;
+using Infrastructure.Burndown;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Web.Models;
-using Web.Models.Agile;
 
 namespace Web.Controllers
 {
@@ -16,16 +14,21 @@ namespace Web.Controllers
   [Route("api/[controller]")]
   public class BurndownController : ControllerBase
   {
-
     private readonly IBurndownApiCalls burndownApiCalls;
     private readonly IMapper mapper;
     private readonly PostgressDbContext dbContext;
+    private readonly DatapointService datapointService;
 
-    public BurndownController(IBurndownApiCalls burndownApiCalls, IMapper mapper, PostgressDbContext dbContext)
+    public BurndownController(
+      IBurndownApiCalls burndownApiCalls,
+      IMapper mapper,
+      PostgressDbContext dbContext)
     {
       this.burndownApiCalls = burndownApiCalls;
       this.mapper = mapper;
       this.dbContext = dbContext;
+      //TODO: Inject or make static
+      this.datapointService = new DatapointService();
     }
 
     [HttpGet]
@@ -51,59 +54,7 @@ namespace Web.Controllers
         return NotFound();
       }
 
-      return Ok(convertIterationDataToBurndownChartModel(mapper.Map<IterationModel>(iterationData)));
+      return Ok(datapointService.convertIterationDataToBurndownChartModel(mapper.Map<IterationModel>(iterationData)));
     }
-
-    private BurndownChartModel convertIterationDataToBurndownChartModel(IterationModel data)
-    {
-      const int daysInIteration = 14;
-      var points = data.DataPoints.Select(x => x.RemainingPoints).ToList();
-      var everhour = data.DataPoints.Select(x => x.RemainingEverhourPoints).ToList();
-
-      var chartModel = new BurndownChartModel 
-      {
-        IdealBurndown = makeIdealBurndown(data.InitialPoints, daysInIteration),
-        PointBurndown = makePointBurndown(points),
-        //EverhourBurndown = new // makePointBurndown(everhour)
-      };
-      return chartModel;
-    }
-    
-    private IEnumerable<Datapoint> makeIdealBurndown(int initialPoints, int days) {
-      var datapoints = new List<Datapoint>();
-      var stepValue = (double)initialPoints / days;
-      var remainingPoints = (double)initialPoints;
-
-      for(var i = 0; i <= days; i++)
-      {
-        datapoints.Add(makeDatapoint((double)i, remainingPoints));
-        remainingPoints = remainingPoints - stepValue;
-      }
-
-      return datapoints;
-    }
-
-    private IEnumerable<Datapoint> makePointBurndown(List<int?> points)
-    {
-      var datapoints = new List<Datapoint>();
-
-      for(var i = 0; i < points.Count(); i++)
-      {
-        datapoints.Add(makeDatapoint((double)i, (double)points[i]));
-      }
-
-
-      return datapoints;
-    }
-
-    private Datapoint makeDatapoint(double x, double y)
-    {
-      return new Datapoint
-      {
-        X = x,
-        Y = y
-      };
-    }
-
   }
 }

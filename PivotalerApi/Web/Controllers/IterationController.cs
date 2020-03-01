@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Data;
 using Data.Entities.Agile;
+using Infrastructure.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Web.Models.Agile;
 
 namespace Web.Controllers
 {
