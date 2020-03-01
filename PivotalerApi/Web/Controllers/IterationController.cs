@@ -7,6 +7,7 @@ using Data.Entities.Agile;
 using Infrastructure.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Web.Models;
 
 namespace Web.Controllers
 {
@@ -126,14 +127,14 @@ namespace Web.Controllers
 
     [HttpPut]
     [Route("datapoints/{datapointId}")]
-    public async Task<IActionResult> UpdateDatapoint(int datapointId, IterationDataPointModel model)
+    public async Task<IActionResult> UpdateDatapoint(int datapointId, EditDatapointModel model)
     {
       var existingDataPoint = await dbContext.IterationDataPoints
         .SingleOrDefaultAsync(x => x.IterationDataPointId == datapointId);
 
       if (existingDataPoint != null)
       {
-        mapper.Map<IterationDataPointModel, IterationDataPoint>(model, existingDataPoint);
+        mapper.Map<EditDatapointModel, IterationDataPoint>(model, existingDataPoint);
         await dbContext.SaveChangesAsync();
         return Ok(mapper.Map<IterationDataPointModel>(existingDataPoint));
       }
