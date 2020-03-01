@@ -27,7 +27,6 @@ export const BurndownChart = (props: BurndownChartProps) => {
     getIterationBurndown(props.iterationId)
       .then(data => {
         setData(data);
-        
       })
   }, [props.iterationId])
 
@@ -35,6 +34,7 @@ export const BurndownChart = (props: BurndownChartProps) => {
     if (!data) {
       return;
     }
+    console.log("Data", data);
     renderChart(data)
   }, [data])
 

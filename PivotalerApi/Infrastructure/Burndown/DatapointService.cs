@@ -19,7 +19,7 @@ namespace Infrastructure.Burndown
       {
         IdealBurndown = MakeIdealBurndown(data.InitialPoints, daysInIteration),
         PointBurndown = MakePointBurndown(points),
-        //EverhourBurndown = new // makePointBurndown(everhour)
+        EverhourBurndown = MakePointBurndown(everhour)
       };
       return chartModel;
     }
@@ -44,7 +44,10 @@ namespace Infrastructure.Burndown
 
       for(var i = 0; i < points.Count(); i++)
       {
-        datapoints.Add(MakeDatapoint((double)i, (double)points[i]));
+        if (points[i] != null)
+        {
+          datapoints.Add(MakeDatapoint((double)i, (double)points[i]));
+        }
       }
 
 
