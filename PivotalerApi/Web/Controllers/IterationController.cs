@@ -94,6 +94,20 @@ namespace Web.Controllers
       throw new NotImplementedException();
     }
 
+    [HttpGet]
+    [Route("datapoints/{datapointId}")]
+    public async Task<IActionResult> GetDatapointById(int datapointId)
+    {
+      var result = await dbContext.IterationDataPoints
+        .SingleOrDefaultAsync(x => x.IterationDataPointId == datapointId);
+
+      if (result != null) {
+        return Ok(mapper.Map<IterationDataPointModel>(result));
+      }
+
+      return NotFound();
+    }
+
     [HttpPost]
     [Route("{iterationId}/datapoints/new")]
     public async Task<IActionResult> CreateIterationDataPoint(int iterationId, IterationDataPointModel model )
@@ -111,8 +125,8 @@ namespace Web.Controllers
     }
 
     [HttpPut]
-    [Route("datapoint/{datapointId}")]
-    public async Task<IActionResult> UpdateDataPoint(int datapointId, IterationDataPointModel model)
+    [Route("datapoints/{datapointId}")]
+    public async Task<IActionResult> UpdateDatapoint(int datapointId, IterationDataPointModel model)
     {
       var existingDataPoint = await dbContext.IterationDataPoints
         .SingleOrDefaultAsync(x => x.IterationDataPointId == datapointId);

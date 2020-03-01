@@ -1,0 +1,4 @@
+{
+  "nxunitExplorer.nunit": "./PivotalerApi/Test/**",
+  "dotnet-test-explorer.testProjectPath": "./PivotalerApi/Test"
+}

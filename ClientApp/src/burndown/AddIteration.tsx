@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Typography, makeStyles, TextField, Button } from '@material-ui/core';
-import { allLabels } from './EditDatapoint';
+import { addNewIteration } from './burndownApiService';
+import { IterationModel } from './burndownDataModels';
 
 var useStyles = makeStyles(theme => ({
   root: {
@@ -13,7 +14,7 @@ var useStyles = makeStyles(theme => ({
   }
 }))
 
-export const EditSprint = () => {
+export const AddIteration = () => {
   const classes = useStyles();
 
   const [startDate, setStartDate] = useState("");
@@ -21,8 +22,16 @@ export const EditSprint = () => {
   const [initialPoints, setInitialPoints] = useState("");
   const [initialEverhourPoints, setInitialEverhourPoints] = useState("");
 
-  const submitEditSprint = () => {
-    
+  const submitAddIteration = () => {
+    const newIteration = {
+      startDate: startDate,
+      endDate: endDate,
+      initialPoints: parseInt(initialPoints),
+      initialEverhourPoints: parseInt(initialEverhourPoints)
+    } as IterationModel
+
+    addNewIteration(newIteration)
+
   }
   
   return (
@@ -40,7 +49,7 @@ export const EditSprint = () => {
         <TextField label="Initial Everhour Points" fullWidth={true} value={initialEverhourPoints} onChange={(e) => setInitialEverhourPoints(e.target.value)}/>
       </div>
       <div className={classes.formControl}>
-        <Button variant="contained" size="medium" color="primary" onClick={submitEditSprint}>Edit Sprint</Button>
+        <Button variant="contained" size="medium" color="primary" onClick={submitAddIteration}>Add Sprint</Button>
       </div>
     </form>
   )

@@ -14,7 +14,7 @@ export interface IterationModel {
 }
 
 export interface IterationDataPointModel {
-  id?: number;
+  iterationDataPointId?: number;
   iterationId: number;
   dateTime: any;
   remainingPoints: number;

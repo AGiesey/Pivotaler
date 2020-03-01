@@ -4,9 +4,9 @@ using AutoMapper;
 using Data;
 using Infrastructure.Models;
 using Infrastructure.PivotalApi;
-using Infrastructure.Burndown;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using static Infrastructure.Burndown.DatapointService;
 
 namespace Web.Controllers
 {
@@ -17,7 +17,6 @@ namespace Web.Controllers
     private readonly IBurndownApiCalls burndownApiCalls;
     private readonly IMapper mapper;
     private readonly PostgressDbContext dbContext;
-    private readonly DatapointService datapointService;
 
     public BurndownController(
       IBurndownApiCalls burndownApiCalls,
@@ -27,8 +26,6 @@ namespace Web.Controllers
       this.burndownApiCalls = burndownApiCalls;
       this.mapper = mapper;
       this.dbContext = dbContext;
-      //TODO: Inject or make static
-      this.datapointService = new DatapointService();
     }
 
     [HttpGet]
@@ -54,7 +51,7 @@ namespace Web.Controllers
         return NotFound();
       }
 
-      return Ok(datapointService.convertIterationDataToBurndownChartModel(mapper.Map<IterationModel>(iterationData)));
+      return Ok(ConvertIterationDataToBurndownChartModel(mapper.Map<IterationModel>(iterationData)));
     }
   }
 }

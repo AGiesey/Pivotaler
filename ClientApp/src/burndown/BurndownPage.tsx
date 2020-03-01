@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Link, Route} from 'react-router-dom';
 import { makeStyles, Paper, Typography, IconButton, Menu, MenuItem } from '@material-ui/core';
-// import { BurndownDatapoint } from './burndownInterfaces';
 import { SidebarPageLayout } from '../layout/SidebarPageLayout';
 import { MoreVert } from '@material-ui/icons';
 import { BurndownChart } from './BurndownChart';
 import { AddDatapoint } from './AddDatapoint';
 import { EditDatapoint } from './EditDatapoint';
-import { EditSprint } from './EditSprint';
-import { AddSprint } from './AddSprint';
+import { EditIteration } from './EditIteration';
+import { AddIteration } from './AddIteration';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -30,15 +30,21 @@ enum BurndownPagesEnum {
   SprintBurndown = "Sprint Burndown",
   AddSprintDatapoint = "Add Sprint Datapoint",
   EditSprint = "Edit Sprint",
-  EditSprintDatapoints = "Edit Sprint Datapoints",
+  EditSprintDatapoint = "Edit Sprint Datapoint",
   AddNewSprint = "Add New Sprint"
 }
 
 export const BurndownPage: React.FC = () => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [title, setTitle] = useState<string>(BurndownPagesEnum.SprintBurndown)
-  // const [burndownData, setBurndownData] = useState([] as BurndownDatapoint[])
+  const [title, setTitle] = useState<string>(BurndownPagesEnum.SprintBurndown);
+  
+  const [currentIterationId, setCurrentIterationId] = useState(3);
+  const [currentDatapointId, setCurrentDatapointId] = useState<number | undefined>();
+
+  // useEffect(() => {
+  //   setCurrentIterationId(3)
+  // }, [])
 
   const showBurndownMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -49,8 +55,8 @@ export const BurndownPage: React.FC = () => {
       case "AddSprintDatapoint":
         setTitle(BurndownPagesEnum.AddSprintDatapoint);
         break;
-      case "EditSprintDatapoints":
-        setTitle(BurndownPagesEnum.EditSprintDatapoints);
+      case "EditSprintDatapoint":
+        setTitle(BurndownPagesEnum.EditSprintDatapoint);
         break;
       case "EditSprint":
         setTitle(BurndownPagesEnum.EditSprint);
@@ -64,18 +70,23 @@ export const BurndownPage: React.FC = () => {
     setAnchorEl(null);
   }
 
+  const editDatapoint = (datapointId: number) => {
+    setCurrentDatapointId(datapointId);
+    setTitle(BurndownPagesEnum.EditSprintDatapoint)
+  }
+
   const getPageBody = () => {
     switch(title) {
       case "Add Sprint Datapoint":
-        return <AddDatapoint iterationId={3}/>
-      case "Edit Sprint Datapoints":
-        return <EditDatapoint />
+        return <AddDatapoint iterationId={currentIterationId}/>
+      case "Edit Sprint Datapoint":
+        return <EditDatapoint datapointId={currentDatapointId}/>
       case "Edit Sprint":
-        return <EditSprint />
+        return <EditIteration iterationId={currentIterationId} onEditDatapoint={editDatapoint}/>
       case "Add New Sprint":
-        return <AddSprint />
+        return <AddIteration />
       default:
-        return <BurndownChart iterationId={3} />
+        return <BurndownChart iterationId={currentIterationId} />
     }
   }
 
@@ -110,27 +121,26 @@ export const BurndownPage: React.FC = () => {
   )
 }
 
-// export const BurndownPage: React.FC = () => {
-//   const classes = useStyles();
-//   const [burndownData, setBurndownData] = useState([] as BurndownDatapoint[])
-
-//   useEffect(() => {
-//     // TODO: implement new get burndown stuff
-//     //getBurndown()
-//       //.then((bd: BurndownDatapoint[])  => setBurndownData(bd))
-//   }, [])
-
-//   return (
-    // <div className={classes.root}>
-    //   <Sidebar />
-    //   <Paper className={classes.backlogPaper}>
-    //     <Typography className={classes.pageTitle} variant="h4">Sprint Burndown </Typography>
-    //       {
-    //         burndownData.length
-    //           ? <BurndownChart data={burndownData} />
-    //           : <Typography>Loading...</Typography>
-    //       }   
-    //   </Paper>
-    // </div>
-//   )
-// }
+// return (
+//   <SidebarPageLayout>
+//     <Paper className={classes.root}>
+//       <div className={classes.pageHeader}>
+//         <Typography variant="h3">{title}</Typography>
+//         <IconButton color="secondary" aria-controls="burndown-menu" aria-haspopup="true" onClick={showBurndownMenu}>
+//             <MoreVert />
+//           </IconButton>
+//           <Menu
+//             id="burndown-menu"
+//             anchorEl={anchorEl}
+//             keepMounted
+//             open={Boolean(anchorEl)}
+//           >
+//             <MenuItem id="AddSprintDatapoint"></MenuItem>
+//             <MenuItem id="EditSprintDatapoints"></MenuItem>
+//             <MenuItem id="EditSprint"></MenuItem>
+//             <MenuItem id="AddNewSprint"></MenuItem>
+//           </Menu>
+//       </div>
+//     </Paper>
+//   </SidebarPageLayout>
+// )

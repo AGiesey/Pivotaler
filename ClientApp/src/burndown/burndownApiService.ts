@@ -12,6 +12,11 @@ export const getIterationBurndown = (iterationId: number) => {
     .then(response => response.data);
 }
 
+export const getIterationById = (iterationId: number) => {
+  return axios.get(`${apiUriBase}/iteration/${iterationId}`)
+    .then(response => response.data);
+}
+
 export const addNewIteration = (iteration: IterationModel) => {
   return axios.post(`${apiUriBase}/iteration/new`, iteration, baseOptions)
     .then(response => console.log("Add Iteration", response));
@@ -20,4 +25,14 @@ export const addNewIteration = (iteration: IterationModel) => {
 export const addNewDatapoint = (datapoint: IterationDataPointModel, iterationId: number) => {
   return axios.post(`${apiUriBase}/iteration/${iterationId}/datapoints/new`, datapoint, baseOptions)
     .then(response => console.log("Add Datapoint", response));
+}
+
+export const getDatapointById = (datapointId: number) => {
+  return axios.get<IterationDataPointModel>(`${apiUriBase}/iteration/datapoints/${datapointId}`)
+    .then(result => result.data);
+}
+
+export const updateDatapoint = (datapointId: number, model: any) => {
+  return axios.put<IterationDataPointModel>(`${apiUriBase}/iteration/datapoints/${datapointId}`, model, baseOptions)
+    .then(response => response.data);
 }

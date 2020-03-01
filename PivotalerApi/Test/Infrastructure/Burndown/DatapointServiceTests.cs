@@ -1,21 +1,28 @@
 using NUnit.Framework;
 using Infrastructure.Burndown;
+using Infrastructure.Models;
+using static Infrastructure.Burndown.DatapointService;
 
 namespace Test.Infrastructure.Tests.Burndown
 {
   [TestFixture]
   public class DatapointServiceTests
   {
-    private readonly DatapointService datapointService;
 
-    public DatapointServiceTests()
-    {
-      this.datapointService = new DatapointService();
-    }
     [Test]
-    public void TestRuns() 
+    public void MakeDatapoint_Works() 
     {
-      datapointService.MakeDatapoint();
+      const double x = (double) 15;
+      const double y = (double) 15;
+      var expected = new Datapoint {
+        X = x,
+        Y = y
+      };
+
+      var result = MakeDatapoint(x, y);
+
+      Assert.AreEqual(expected.X, result.X);
+      Assert.AreEqual(expected.Y, result.Y);
     }
   }
 }
