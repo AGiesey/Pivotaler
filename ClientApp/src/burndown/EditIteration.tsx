@@ -8,17 +8,35 @@ import moment from 'moment';
 var useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
-    flexDirection: 'column'
+  },
+  iterationDataForm: {
+    flexBasis: '30%',
+    flexShrink: 0
+  },
+  datapointsContainer: {
+    flexGrow: 1,
+    marginLeft: theme.spacing(8)
+  },
+  sprintDataActions: {
+    display: 'flex',
+    padding: theme.spacing(1),
+    justifyContent: 'flex-end'
   },
   formControl: {
     margin: theme.spacing(1),
-    width: '30%'
+  },
+  action: {
+    marginLeft: theme.spacing(1)
+  },
+  editDatapointButton: {
+    marginLeft: theme.spacing(4)
   }
 }))
 
 interface EditIterationProps {
   iterationId: number;
   onEditDatapoint: (datapointId: number) => void;
+  onCancelEdit: Function;
 }
 
 export const EditIteration = (props: EditIterationProps) => {
@@ -43,9 +61,9 @@ export const EditIteration = (props: EditIterationProps) => {
   }, [props.iterationId]);
 
 
-  // useEffect(() => {
-
-  // }, [datpoints])
+  const cancel = () => {
+    props.onCancelEdit();
+  }
 
   const submitEditSprint = () => {
     
@@ -53,7 +71,8 @@ export const EditIteration = (props: EditIterationProps) => {
   
   return (
     <div className={classes.root}>
-      <form >
+      <form className={classes.iterationDataForm}>
+        <Typography variant="h5">Sprint Data</Typography>
         <div className={classes.formControl}>
           <TextField label="Start Date" fullWidth={true} value={startDate} onChange={(e) => setStartDate(e.target.value)}/>
         </div>
@@ -66,18 +85,32 @@ export const EditIteration = (props: EditIterationProps) => {
         <div className={classes.formControl}>
           <TextField label="Initial Everhour Points" fullWidth={true} value={initialEverhourPoints} onChange={(e) => setInitialEverhourPoints(e.target.value)}/>
         </div>
-        <div className={classes.formControl}>
-          <Button variant="contained" size="medium" color="primary" onClick={submitEditSprint}>Save</Button>
+        <div className={classes.sprintDataActions}>
+          <Button className={classes.action} variant="outlined" size="medium" color="secondary" onClick={cancel}>Back To Sprint</Button>
+          <Button className={classes.action} variant="outlined" size="medium" color="primary" onClick={submitEditSprint}>Save</Button>
         </div>
       </form>
-      <Typography variant="h5">Datapoints</Typography>
-      <List>
-        {
-          datapoints.length
-        ? datapoints.map((datapoint, index) => <ListItem key={index}> <Typography>{moment(datapoint.dateTime).format('MMM Do')}: &nbsp;</Typography> <Typography>Points: {datapoint.remainingPoints}</Typography><IconButton size="small" color="primary" onClick={() => props.onEditDatapoint(datapoint.iterationDataPointId)}><Edit /></IconButton></ListItem>)
-            : <Typography>Loading...</Typography>
-        }
-      </List>
+      <div className={classes.datapointsContainer}>
+        <Typography variant="h5">Datapoints</Typography>
+        <List>
+          {
+            datapoints.length
+          ? datapoints.map((datapoint, index) => {
+              return (
+                <ListItem key={index}> 
+                  <Typography>{moment(datapoint.dateTime).format('MMM Do')}: &nbsp;</Typography>
+                  <Typography>Points: {datapoint.remainingPoints}</Typography>
+                  <span>&nbsp;&nbsp;&nbsp;</span>
+                  <IconButton size="small" color="primary" onClick={() => props.onEditDatapoint(datapoint.iterationDataPointId)}>
+                    <Edit />
+                  </IconButton>
+                </ListItem>
+              )
+          })
+              : <Typography>Loading...</Typography>
+          }
+        </List>
+      </div>
     </div>
   )
 }

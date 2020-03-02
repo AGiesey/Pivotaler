@@ -5,6 +5,7 @@ import { IterationDataPointModel } from './burndownDataModels';
 
 interface EditDatapointProps {
     datapointId: number | undefined;
+    onEditDatapoint: Function;
 }
 
 var useStyles = makeStyles(theme => ({
@@ -47,7 +48,9 @@ export const EditDatapoint = (props: EditDatapointProps) => {
             remainingEverhourPoints: parseInt(remainingEverhourPoints) || null,
         };
 
-        updateDatapoint(datapointId, model);
+        // TODO: Error handling
+        updateDatapoint(datapointId, model)
+            .then(() => props.onEditDatapoint());
     }
 
     return (

@@ -42,10 +42,6 @@ export const BurndownPage: React.FC = () => {
   const [currentIterationId, setCurrentIterationId] = useState(3);
   const [currentDatapointId, setCurrentDatapointId] = useState<number | undefined>();
 
-  // useEffect(() => {
-  //   setCurrentIterationId(3)
-  // }, [])
-
   const showBurndownMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -75,14 +71,21 @@ export const BurndownPage: React.FC = () => {
     setTitle(BurndownPagesEnum.EditSprintDatapoint)
   }
 
+  const goToBurndown = (iterationId?: number) => {
+    if (iterationId) {
+      setCurrentIterationId(iterationId);
+    }
+    setTitle(BurndownPagesEnum.SprintBurndown)
+  }
+
   const getPageBody = () => {
     switch(title) {
       case "Add Sprint Datapoint":
         return <AddDatapoint iterationId={currentIterationId}/>
       case "Edit Sprint Datapoint":
-        return <EditDatapoint datapointId={currentDatapointId}/>
+        return <EditDatapoint datapointId={currentDatapointId} onEditDatapoint={goToBurndown}/>
       case "Edit Sprint":
-        return <EditIteration iterationId={currentIterationId} onEditDatapoint={editDatapoint}/>
+        return <EditIteration iterationId={currentIterationId} onEditDatapoint={editDatapoint} onCancelEdit={goToBurndown}/>
       case "Add New Sprint":
         return <AddIteration />
       default:
@@ -106,9 +109,9 @@ export const BurndownPage: React.FC = () => {
               open={Boolean(anchorEl)}
             >
               <MenuItem id="AddSprintDatapoint" onClick={onSelectBurndownMenuItem}>Add Sprint Datapoint</MenuItem>
-              <MenuItem id="EditSprintDatapoints" onClick={onSelectBurndownMenuItem}>Edit Sprint Datapoints</MenuItem>
               <MenuItem id="EditSprint" onClick={onSelectBurndownMenuItem}>Edit Sprint</MenuItem>
               <MenuItem id="AddNewSprint" onClick={onSelectBurndownMenuItem}>Add New Sprint</MenuItem>
+              <MenuItem onClick={() => setAnchorEl(null)} color="secondary">Close Menu</MenuItem>
             </Menu>
           </div>
           
