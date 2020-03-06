@@ -5,7 +5,7 @@ export interface DatapointModel {
 }
 
 export interface IterationModel {
-  //id?: number;
+  iterationId?: number;
   startDate: any;
   endDate: any;
   initialPoints: number;

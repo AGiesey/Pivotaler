@@ -1,12 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core';
-import { getIterationBurndown } from './burndownApiService';
+import { makeStyles, Select, MenuItem, FormControl, InputLabel } from '@material-ui/core';
+import { getIterationBurndown, getRecentIterations } from './burndownApiService';
 import Chart from 'chart.js';
+import { IterationModel } from './burndownDataModels';
+import { burndownChartConfig } from './burndownChartConfig';
+import moment from 'moment';
 
 const useStyles = makeStyles(theme => ({
   root: {
     width: 'calc(100% - 32px)',
     height: 'calc(100% - 32px)',
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  selectSprintContainer: {
+    flexBasis: '5em',
+    flexShrink: 0
+  },
+  selectSprint: {
+    minWidth: '12em',
+  },
+  chartContainer: {
+    flexGrow: 1,
   },
   chartCanvas: {
     height: '100%',
@@ -15,11 +30,20 @@ const useStyles = makeStyles(theme => ({
 
 interface BurndownChartProps {
   iterationId: number;
+  onSetCurrentIterationId: Function;
+}
+
+interface IterationOptions {
+  key: any;
+  value: string;
 }
 
 export const BurndownChart = (props: BurndownChartProps) => {
   const classes = useStyles();
   const [data, setData] = useState();
+  const [iterationOptions, setIterationOptions] = useState([] as IterationOptions[]);
+  const [currentIterationId, setCurrentIterationId] = useState("");
+  const [currentChart, setCurrentChart] = useState();
 
   useEffect(() => {
     getIterationBurndown(props.iterationId)
@@ -29,10 +53,32 @@ export const BurndownChart = (props: BurndownChartProps) => {
   }, [props.iterationId])
 
   useEffect(() => {
+    var maybeInt = parseInt(currentIterationId);
+
+    if (!isNaN(maybeInt)) {
+      props.onSetCurrentIterationId(maybeInt);
+    }
+    
+  }, [currentIterationId])
+
+  useEffect(() => {
+    getRecentIterations()
+      .then(iterations => {
+        const options = iterations.map((iteration: IterationModel) => (
+          {
+            key: iteration.iterationId, 
+            value: `${moment(iteration.startDate).format('MMM Do')} - ${moment(iteration.endDate).format('MMM Do')}`
+          }
+        ))
+
+        setIterationOptions(options);
+      })
+  }, [])
+
+  useEffect(() => {
     if (!data) {
       return;
     }
-    console.log("Data", data);
     renderChart(data)
   }, [data])
 
@@ -40,52 +86,37 @@ export const BurndownChart = (props: BurndownChartProps) => {
   const renderChart = (data: any) => {
     const ctx: HTMLCanvasElement = document.getElementById('burndownChart') as HTMLCanvasElement;
     
-    console.log("Data", data);
-
     const ideal = data.idealBurndown;
+    const idealEverhour = data.idealEverhourBurndown;
     const points = data.pointBurndown;
     const everhour = data.everhourBurndown;
-    
-    new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11",  "12", "13", "14"],
-        datasets: [
-          {
-            label: 'Ideal',
-            data: ideal,
-            backgroundColor: 'rgba(0,0,0,0.04)'
-          },
-          {
-            label: 'Points',
-            data: points,
-            borderColor: 'orange',
-            backgroundColor: 'rgba(0,0,0,0)'
-          },
-          {
-            label: 'Everhour',
-            data: everhour,
-            borderColor: 'purple',
-            backgroundColor: 'rgba(0,0,0,0)'
-          }
-        ]
-      },
-      options: {
-        responsive: false,
-        scales: {
-          yAxes: [{
-            ticks: {
-                beginAtZero: true
-            }
-          }]
-        }
-      }
-    })
+
+    if (currentChart) {
+      currentChart.data = burndownChartConfig(ideal, idealEverhour, points, everhour);
+      currentChart.update();
+    } else {
+      var newChart = new Chart(ctx, burndownChartConfig(ideal, idealEverhour, points, everhour));
+      setCurrentChart(newChart)
+    }
   }
 
   return (
     <div className={classes.root}>
-      <canvas id="burndownChart" className={classes.chartCanvas}></canvas>
+      <div className={classes.selectSprintContainer}>
+        <FormControl className={classes.selectSprint}>
+          <InputLabel>Select Sprint</InputLabel>
+          <Select
+            value={currentIterationId}
+            onChange={(e) => setCurrentIterationId(e.target.value as string)}
+          >
+            {iterationOptions.map(option => <MenuItem key={option.key} value={option.key.toString()}>{option.value}</MenuItem>)}
+            
+          </Select>
+        </FormControl>
+      </div>
+      <div className={classes.chartContainer}>
+        <canvas id="burndownChart" className={classes.chartCanvas}></canvas>
+      </div>
     </div>
   )
 }

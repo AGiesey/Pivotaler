@@ -17,6 +17,11 @@ export const getIterationById = (iterationId: number) => {
     .then(response => response.data);
 }
 
+export const updateIteration = (iterationId: number, model: any) => {
+  return axios.put(`${apiUriBase}/iteration/${iterationId}`, model, baseOptions)
+    .then(response => response.data);
+}
+
 export const addNewIteration = (iteration: IterationModel) => {
   return axios.post(`${apiUriBase}/iteration/new`, iteration, baseOptions)
     .then(response => console.log("Add Iteration", response));
@@ -34,5 +39,10 @@ export const getDatapointById = (datapointId: number) => {
 
 export const updateDatapoint = (datapointId: number, model: any) => {
   return axios.put<IterationDataPointModel>(`${apiUriBase}/iteration/datapoints/${datapointId}`, model, baseOptions)
+    .then(response => response.data);
+}
+
+export const getRecentIterations = (count: number = 5) => {
+  return axios.get<IterationModel[]>(`${apiUriBase}/iteration/recent`)
     .then(response => response.data);
 }

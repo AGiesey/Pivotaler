@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -8,6 +9,7 @@ using Infrastructure.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Web.Models;
+using Web.Models.Agile;
 
 namespace Web.Controllers
 {
@@ -38,6 +40,18 @@ namespace Web.Controllers
       }
 
       return NotFound();
+    }
+
+    [HttpGet]
+    [Route("recent")]
+    public async Task<IActionResult> GetRecentIterations(int count)
+    {
+      var today = DateTime.Now;
+
+      var result = await dbContext.Iterations
+        .ToListAsync();
+
+      return Ok(mapper.Map<IEnumerable<Iteration>, IEnumerable<IterationModel>>(result));
     }
 
     [HttpGet]
@@ -73,14 +87,14 @@ namespace Web.Controllers
 
     [HttpPut]
     [Route("{iterationId}")]
-    public async Task<IActionResult> UpdateIteration(int iterationId, IterationModel model)
+    public async Task<IActionResult> UpdateIteration(int iterationId, EditIterationModel model)
     {
       var existingIteration = await dbContext.Iterations
         .SingleOrDefaultAsync(x => x.IterationId == iterationId);
 
       if (existingIteration != null)
       {
-        mapper.Map<IterationModel, Iteration>(model, existingIteration);
+        mapper.Map<EditIterationModel, Iteration>(model, existingIteration);
         await dbContext.SaveChangesAsync();
         return Ok(mapper.Map<IterationModel>(existingIteration));
       }
@@ -113,13 +127,7 @@ namespace Web.Controllers
     [Route("{iterationId}/datapoints/new")]
     public async Task<IActionResult> CreateIterationDataPoint(int iterationId, IterationDataPointModel model )
     {
-      var entity = new IterationDataPoint {
-        DateTime = model.DateTime,
-        IterationId = iterationId,
-        RemainingPoints = model.RemainingPoints
-      };
-
-      var result = await dbContext.AddAsync(entity);
+      var result = await dbContext.AddAsync(mapper.Map<IterationDataPoint>(model));
       await dbContext.SaveChangesAsync();
 
       return Ok();

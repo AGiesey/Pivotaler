@@ -39,7 +39,7 @@ export const BurndownPage: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [title, setTitle] = useState<string>(BurndownPagesEnum.SprintBurndown);
   
-  const [currentIterationId, setCurrentIterationId] = useState(3);
+  const [currentIterationId, setCurrentIterationId] = useState(4);
   const [currentDatapointId, setCurrentDatapointId] = useState<number | undefined>();
 
   const showBurndownMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -89,7 +89,7 @@ export const BurndownPage: React.FC = () => {
       case "Add New Sprint":
         return <AddIteration />
       default:
-        return <BurndownChart iterationId={currentIterationId} />
+        return <BurndownChart iterationId={currentIterationId} onSetCurrentIterationId={setCurrentIterationId}/>
     }
   }
 

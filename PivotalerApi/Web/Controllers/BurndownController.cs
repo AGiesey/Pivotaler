@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Data;
@@ -45,6 +46,8 @@ namespace Web.Controllers
       var iterationData = await dbContext.Iterations
         .Include(x => x.DataPoints)
         .SingleOrDefaultAsync(x => x.IterationId == iterationId);
+
+      iterationData.DataPoints = iterationData.DataPoints.OrderBy(x => x.DateTime);
 
       if(iterationData == null)
       {

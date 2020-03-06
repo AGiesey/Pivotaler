@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Typography, makeStyles, TextField, Button, List, ListItem, IconButton } from '@material-ui/core';
-import { getIterationById } from './burndownApiService';
+import { getIterationById, updateIteration } from './burndownApiService';
 import { IterationDatapointModel } from './iterationModels';
 import { Edit } from '@material-ui/icons';
 import moment from 'moment';
@@ -56,7 +56,6 @@ export const EditIteration = (props: EditIterationProps) => {
         setInitialPoints(iteration.initialPoints.toString());
         setInitialEverhourPoints(iteration.initialEverhourPoints.toString());
         setDatapoints(iteration.dataPoints || [] as IterationDatapointModel[])
-        console.log("Datapoints", iteration.dataPoints)
       });
   }, [props.iterationId]);
 
@@ -66,7 +65,20 @@ export const EditIteration = (props: EditIterationProps) => {
   }
 
   const submitEditSprint = () => {
-    
+    const model = {
+      startDate: startDate,
+      endDate: endDate,
+      initialPoints: parseInt(initialPoints),
+      initialEverhourPoints: parseInt(initialEverhourPoints)
+    }
+
+    updateIteration(props.iterationId, model)
+      .then(iteration => {
+        setStartDate(iteration.startDate.toString());
+        setEndDate(iteration.endDate.toString());
+        setInitialPoints(iteration.initialPoints.toString());
+        setInitialEverhourPoints(iteration.initialEverhourPoints.toString());
+      })
   }
   
   return (

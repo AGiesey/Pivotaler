@@ -6,6 +6,7 @@ using Web.Models.Story;
 using Web.Models.User;
 using Data.Entities.Agile;
 using Infrastructure.Models;
+using Web.Models.Agile;
 
 namespace Web.Models
 {
@@ -50,6 +51,9 @@ namespace Web.Models
         .ReverseMap();
 
       CreateMap<EditDatapointModel, IterationDataPoint>()
+        .ReverseMap();
+
+      CreateMap<EditIterationModel, Iteration>()
         .ReverseMap();
     }
   }

@@ -11,13 +11,14 @@ namespace Infrastructure.Burndown
 
     public static BurndownChartModel ConvertIterationDataToBurndownChartModel(IterationModel data)
     {
-      const int daysInIteration = 14;
+      const int daysInIteration = 10;
       var points = data.DataPoints.Select(x => x.RemainingPoints).ToList();
       var everhour = data.DataPoints.Select(x => x.RemainingEverhourPoints).ToList();
 
       var chartModel = new BurndownChartModel 
       {
         IdealBurndown = MakeIdealBurndown(data.InitialPoints, daysInIteration),
+        IdealEverhourBurndown = MakeIdealBurndown(data.InitialEverhourPoints ?? data.InitialPoints, daysInIteration),
         PointBurndown = MakePointBurndown(points),
         EverhourBurndown = MakePointBurndown(everhour)
       };
