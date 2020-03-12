@@ -6,6 +6,7 @@ import { IterationDataPointModel } from './burndownDataModels';
 interface EditDatapointProps {
     datapointId: number | undefined;
     onEditDatapoint: Function;
+    onCancel?: Function;
 }
 
 var useStyles = makeStyles(theme => ({
@@ -16,7 +17,15 @@ var useStyles = makeStyles(theme => ({
     formControl: {
       margin: theme.spacing(1),
       width: '30%'
-    }
+    },
+    actionsContainer: {
+        display: 'flex',
+        padding: theme.spacing(1),
+        justifyContent: 'flex-end'
+    },
+    action: {
+        marginLeft: theme.spacing(1)
+    },
   }))
 
 export const EditDatapoint = (props: EditDatapointProps) => {
@@ -53,6 +62,12 @@ export const EditDatapoint = (props: EditDatapointProps) => {
             .then(() => props.onEditDatapoint());
     }
 
+    const cancel = () => {
+        if (typeof props.onCancel === 'function') {
+            props.onCancel();
+        }
+    }
+
     return (
         <form className={classes.root}>
             <div className={classes.formControl}>
@@ -64,8 +79,9 @@ export const EditDatapoint = (props: EditDatapointProps) => {
             <div className={classes.formControl}>
                 <TextField label="Remaining Everhour Points" fullWidth={true} value={remainingEverhourPoints} onChange={(e) => setRemainingEverhourPoints(e.target.value)} />
             </div>
-            <div className={classes.formControl}>
-                <Button variant="contained" size="medium" color="primary" onClick={submitEditDatapoint}>Save</Button>
+            <div className={`${classes.formControl} ${classes.actionsContainer}`}>
+                <Button className={classes.action} variant="outlined" size="medium" color="secondary" onClick={cancel}>Cancel</Button>
+                <Button className={classes.action} variant="contained" size="medium" color="primary" onClick={submitEditDatapoint}>Save</Button>
             </div>
         </form>
     )

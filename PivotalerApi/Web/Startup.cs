@@ -41,8 +41,7 @@ namespace Web
                 options.AddPolicy(MyAllowSpecificOrigins,
                 builder =>
                 {
-                    builder.WithOrigins("http://localhost:3000",
-                                        "https://localhost:3000")
+                    builder.WithOrigins("http://localhost:3000")
                                         .AllowAnyHeader() // TODO: maybe specify headers if security risk?
                                         .AllowCredentials() // TODO: docs say this is a risk, but I'm not allowing any origin so maybe ok
                                         .AllowAnyMethod();

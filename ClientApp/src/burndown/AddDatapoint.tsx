@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom'
 import { TextField, makeStyles, Button } from '@material-ui/core';
 import { IterationDataPointModel } from './burndownDataModels';
 import { addNewDatapoint } from './burndownApiService';
 
 interface AddDatapointProps {
-  iterationId: number
+  iterationId: number;
+  onAddDatapoint: Function;
 }
 
 var useStyles = makeStyles(theme => ({
@@ -16,12 +16,19 @@ var useStyles = makeStyles(theme => ({
   formControl: {
     margin: theme.spacing(1),
     width: '30%'
-  }
+  },
+  actionsContainer: {
+    display: 'flex',
+    padding: theme.spacing(1),
+    justifyContent: 'flex-end'
+  },
+  action: {
+    marginLeft: theme.spacing(1)
+  },
 }))
 
 export const AddDatapoint = (props: AddDatapointProps) => {
   const classes = useStyles();
-  const history = useHistory();
 
   const [date, setDate] = useState("");
   const [remainingPoints, setRemainingPoints] = useState("");
@@ -32,10 +39,15 @@ export const AddDatapoint = (props: AddDatapointProps) => {
       iterationId: props.iterationId,
       dateTime: date,
       remainingPoints: parseInt(remainingPoints),
-      remainingEverhourPoints: parseInt(remainingPoints)
+      remainingEverhourPoints: parseInt(remainingEverhourPoints)
     } as IterationDataPointModel
 
-    addNewDatapoint(newDatapoint, props.iterationId);
+    addNewDatapoint(newDatapoint, props.iterationId)
+      .then(() => props.onAddDatapoint());
+  }
+
+  const cancel = () => {
+    props.onAddDatapoint();
   }
 
   return (
@@ -49,8 +61,9 @@ export const AddDatapoint = (props: AddDatapointProps) => {
       <div className={classes.formControl}>
         <TextField label="Remaining Everhour Points" fullWidth={true} value={remainingEverhourPoints} onChange={(e) => setRemainingEverhourPoints(e.target.value)} />
       </div>
-      <div className={classes.formControl}>
-        <Button variant="contained" size="medium" color="primary" onClick={submitNewDatapoint}>Add Datapoint</Button>
+      <div className={`${classes.formControl} ${classes.actionsContainer}`}>
+        <Button className={classes.action} variant="outlined" size="medium" color="secondary" onClick={cancel}>Cancel</Button>
+        <Button className={classes.action} variant="contained" size="medium" color="primary" onClick={submitNewDatapoint}>Add Datapoint</Button>
       </div>
     </form>
   )

@@ -78,12 +78,17 @@ export const BurndownPage: React.FC = () => {
     setTitle(BurndownPagesEnum.SprintBurndown)
   }
 
+  const goToEditSprint = () => {
+    // Could be bad if somehow the iteration had changed. 
+    setTitle(BurndownPagesEnum.EditSprint)
+  }
+
   const getPageBody = () => {
     switch(title) {
       case "Add Sprint Datapoint":
-        return <AddDatapoint iterationId={currentIterationId}/>
+        return <AddDatapoint iterationId={currentIterationId} onAddDatapoint={goToBurndown}/>
       case "Edit Sprint Datapoint":
-        return <EditDatapoint datapointId={currentDatapointId} onEditDatapoint={goToBurndown}/>
+        return <EditDatapoint datapointId={currentDatapointId} onEditDatapoint={goToBurndown} onCancel={goToEditSprint}/>
       case "Edit Sprint":
         return <EditIteration iterationId={currentIterationId} onEditDatapoint={editDatapoint} onCancelEdit={goToBurndown}/>
       case "Add New Sprint":
